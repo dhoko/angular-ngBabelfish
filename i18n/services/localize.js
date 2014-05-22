@@ -57,9 +57,9 @@ module.exports = ['$rootScope', '$http','custom', function($rootScope, $http, cu
             }else {
                 angular.extend($rootScope, i18n.data[lang][page]);
             }
-            console.log("[i18n-i18n@setTranslation] Load your translation with the current lang : ",i18n.current);
         }
     }
+
     /**
      * Load a translation to the $scope for a language
      * - doc BCP 47 {@link http://tools.ietf.org/html/bcp47}
@@ -88,7 +88,6 @@ module.exports = ['$rootScope', '$http','custom', function($rootScope, $http, cu
             service.load();
         }
 
-        console.log('[i18n-i18n@loadLanguage] Update APP language from %s to %s', (old + '-' + old.toUpperCase()),lang);
     }
 
     /**
@@ -133,6 +132,9 @@ module.exports = ['$rootScope', '$http','custom', function($rootScope, $http, cu
 
             var lang = config.lang || document.documentElement.lang + '-' + document.documentElement.lang.toUpperCase();
 
+            if(i18n.data[i18n.current]) {
+                return;
+            }
             return $http.get(url)
                 .error(function() {
                     alert("Cannot load i18n translation file");

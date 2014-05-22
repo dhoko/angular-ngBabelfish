@@ -12,11 +12,7 @@ module.exports = angular.module('servalI18n', [])
 
         // Update the translation when you change a page
         $rootScope.$on('$stateChangeSuccess', function(e, toState) {
-
-            // Prevent reload for the the home
-            if(!localize.isLoaded()) {
-                localize.updateState(toState.name);
-            }
+            localize.updateState(toState.name);
         });
 
         localize.load();
