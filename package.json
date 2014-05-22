@@ -1,0 +1,23 @@
+{
+  "name": "serval-i18n",
+  "version": "1.0.0",
+  "description": "Internationalization module for angular.js, it's magic !",
+  "main": "bundle.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dhoko/serval-i18n.git"
+  },
+  "keywords": [
+    "angular",
+    "i18n"
+  ],
+  "author": "dhoko <dhoko@cyaneus.org>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dhoko/serval-i18n/issues"
+  },
+  "homepage": "https://github.com/dhoko/serval-i18n"
+}

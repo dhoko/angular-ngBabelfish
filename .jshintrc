@@ -1,0 +1,24 @@
+{
+  "curly": true,
+  "eqeqeq": true,
+  "immed": true,
+  "latedef": true,
+  "newcap": true,
+  "unused": true,
+  "boss": true,
+  "eqnull": true,
+  "browser": true,
+  "strict": false,
+  "trailing": true,
+  "smarttabs": true,
+  "maxparams": 3,
+
+  "globals": {
+    "console": true,
+    "module": true,
+    "require": true
+    "angular": true,
+    "$": true,
+    "jQuery": true
+  }
+}

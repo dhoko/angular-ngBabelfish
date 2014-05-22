@@ -1,0 +1,22 @@
+{
+  "name": "serval-i18n",
+  "version": "1.0.0",
+  "homepage": "https://github.com/dhoko/serval-i18n",
+  "authors": [
+    "dhoko <aurelien@procheo.fr>"
+  ],
+  "description": "Internationalization module for angular.js, it's magic !",
+  "main": "bundle.js",
+  "keywords": [
+    "angular",
+    "i18n"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
