@@ -3,10 +3,10 @@
  * Translate a string to another language
  * {{ name | translate:'fr-FR':"name"}}
  */
-module.exports = ['localize', '$timeout', function (localize, $timeout) {
+module.exports = ['babelfish', '$timeout', function (babelfish, $timeout) {
 
     return function (input, lang, key) {
-        return localize.get(lang)[key];
+        return babelfish.get(lang)[key];
     }
 
 }];

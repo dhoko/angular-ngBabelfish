@@ -64,7 +64,7 @@ module.exports = ['$rootScope', '$http','custom', function($rootScope, $http, cu
      * Load a translation to the $scope for a language
      * - doc BCP 47 {@link http://tools.ietf.org/html/bcp47}
      * - doc Value of HTML5 lang attr {@link http://webmasters.stackexchange.com/questions/28307/value-of-the-html5-lang-attribute}
-     * @trigger {Event} i18n:localize:changed {previous:XXX,value:XXX2}
+     * @trigger {Event} i18n:babelfish:changed {previous:XXX,value:XXX2}
      * @param {String} lang Your language cf BCP 47
      */
     function loadLanguage(lang) {
@@ -78,7 +78,7 @@ module.exports = ['$rootScope', '$http','custom', function($rootScope, $http, cu
 
         config.lang = i18n.current = lang;
 
-        $rootScope.$emit('i18n:localize:changed', {
+        $rootScope.$emit('i18n:babelfish:changed', {
             previous: (old + '-' + old.toUpperCase()),
             value: lang
         });
@@ -120,7 +120,7 @@ module.exports = ['$rootScope', '$http','custom', function($rootScope, $http, cu
     }
 
     // Listen when you change the language in your application
-    $rootScope.$on('i18n:localize:changed', function() {
+    $rootScope.$on('i18n:babelfish:changed', function() {
         setTranslation(i18n.currentState);
     });
 
