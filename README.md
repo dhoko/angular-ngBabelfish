@@ -89,18 +89,14 @@ When you load the application, as *servali18n* is a dependency, it loads its own
 Ex:
 
 ```JavaScript
-run(['localize', '$state','$rootScope', function(localize, $state, $rootScope) {
+run(['babelfish', '$state','$rootScope', function(babelfish, $state, $rootScope) {
 
     // Update the translation when you change a page
     $rootScope.$on('$stateChangeSuccess', function(e, toState) {
-
-        // Prevent reload for the the home
-        if(!localize.isLoaded()) {
-            localize.updateState(toState.name);
-        }
+        babelfish.updateState(toState.name);
     });
 
-    localize.load();
+    babelfish.load();
 }]);
 ```
 
@@ -134,13 +130,13 @@ angular.module('servalI18n')
 ### Detect when you change the lang of your app
 
 ```JavaScript
-$rootScope.$emit('i18n:localize:changed', {
+$rootScope.$emit('i18n:babelfish:changed', {
     previous: (old + '-' + old.toUpperCase()),
     value: lang
 });
 ```
 
-So you have to listen the scope on `servalI18n:localize:changed`, it gives you access to an object with two keys:
+So you have to listen the scope on `servalI18n:babelfish:changed`, it gives you access to an object with two keys:
 
 - **previous** : Previous language
 - **value** : Current language
@@ -182,17 +178,17 @@ Yup, message is from your i18n. KISS.
 
 > You can configure servalI18n to use a namespace too.
 
-### Service localize
+### Service babelfish
 
 API:
 
-- 'localize.load(url)': Load a translation (default url = i18n/languages.json)
-- 'localize.get(lang)': Return all translations for a lang per state
-- 'localize.all(lang)': Return all translations for a lang
-- 'localize.current()': Return the current lang
-- 'localize.updateLang(lang)': Load new translation for a lang in your app
-- 'localize.updateState(state)': Bind current translation for a state
-- 'localize.isLoaded()': Detect if your i18n is loaded
+- 'babelfish.load(url)': Load a translation (default url = i18n/languages.json)
+- 'babelfish.get(lang)': Return all translations for a lang per state
+- 'babelfish.all(lang)': Return all translations for a lang
+- 'babelfish.current()': Return the current lang
+- 'babelfish.updateLang(lang)': Load new translation for a lang in your app
+- 'babelfish.updateState(state)': Bind current translation for a state
+- 'babelfish.isLoaded()': Detect if your i18n is loaded
 
 ### Filter translate
 
