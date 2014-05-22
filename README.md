@@ -145,9 +145,44 @@ So you have to listen the scope on `servalI18n:localize:changed`, it gives you a
 - **previous** : Previous language
 - **value** : Current language
 
+## Lazy Loading
+
+You can build a file per lang, so you can load only the current lang, and load another if you need to.
+
+### Configuration
+
+```JavaScript
+angular.module('servalI18n').value("custom", {
+    lang: "fr-FR", // Default lang for the app
+    lazy: true, // Activate lazy mode
+    urls: [ // Store each translation
+        {
+            lang: "fr-FR", // Name of your translation
+            url: "/i18n/fr-FR.json" // Path to the translation
+        },{
+            lang: "en-EN",
+            url: "/i18n/en-EN.json"
+        }
+    ]
+});
+```
+
+It's ready.
+
+
 ## API
 
-#### Service localize
+### In a template
+
+```html
+<p>{{message}}</p>
+```
+
+Yup, message is from your i18n. KISS.
+
+> You can configure servalI18n to use a namespace too.
+
+### Service localize
 
 API:
 
@@ -159,7 +194,7 @@ API:
 - 'localize.updateState(state)': Bind current translation for a state
 - 'localize.isLoaded()': Detect if your i18n is loaded
 
-#### Filter translate
+### Filter translate
 
 ```html
 <!-- Our current language is en-EN -->
@@ -167,9 +202,9 @@ API:
 ```
 Display the french translation for this key
 
-#### Directives
+### Directives
 
-##### i18nBind
+#### i18nBind
 
 ```html
 <!-- Our current language is en-EN -->
@@ -180,7 +215,7 @@ Display the french translation for this key
 Ex 1: Display the english translation for name
 Ex 2: Display the french translation for name
 
-##### i18nLoad
+#### i18nLoad
 
 Attach this directive to a button in order to load a translation, for your application.
 
