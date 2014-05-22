@@ -60,7 +60,6 @@ module.exports = ['$rootScope', '$http','custom', function($rootScope, $http, cu
             console.log("[i18n-i18n@setTranslation] Load your translation with the current lang : ",i18n.current);
         }
     }
-
     /**
      * Load a translation to the $scope for a language
      * - doc BCP 47 {@link http://tools.ietf.org/html/bcp47}
@@ -77,12 +76,17 @@ module.exports = ['$rootScope', '$http','custom', function($rootScope, $http, cu
             document.documentElement.lang = lang.split('-')[0];
         }
 
-        i18n.current = lang;
+        config.lang = i18n.current = lang;
 
         $rootScope.$emit('i18n:localize:changed', {
             previous: (old + '-' + old.toUpperCase()),
             value: lang
         });
+
+        // Load the new language if we do not already have it
+        if(config.lazy && !i18n.data[lang]) {
+            service.load();
+        }
 
         console.log('[i18n-i18n@loadLanguage] Update APP language from %s to %s', (old + '-' + old.toUpperCase()),lang);
     }
@@ -100,6 +104,20 @@ module.exports = ['$rootScope', '$http','custom', function($rootScope, $http, cu
             })[0].url;
         }
         return url;
+    }
+
+    /**
+     * Build i18n.data.
+     * @param  {Object} data Data from the translation file
+     */
+    function buildI18n(data) {
+
+        if(!config.lazy) {
+            i18n.data = data;
+            return;
+        }
+
+        i18n.data[i18n.current] = data;
     }
 
     // Listen when you change the language in your application
@@ -124,8 +142,8 @@ module.exports = ['$rootScope', '$http','custom', function($rootScope, $http, cu
                     if(config.lazy) {
                         config.current = name;
                     }
-                    i18n.data = data;
                     i18n.current = lang;
+                    buildI18n(data);
 
                     if(config.lazy) {
                         i18n.available.push(i18n.current);
