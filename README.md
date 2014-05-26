@@ -24,6 +24,8 @@ angular.module('myApp',['servalI18n']);
 
 You have to create a json file, cf:
 
+### Ex for a default JSON (lazy mode is off)
+
 ```json
 {
   "fr-FR": {
@@ -76,7 +78,39 @@ You have to create a json file, cf:
 ***You must respect a convention for the lang***
 > Language are defined with a `-` as defined inside the [BCP 47](http://tools.ietf.org/html/bcp47). cf [Value of the HTML5 lang attribute](http://webmasters.stackexchange.com/questions/28307/value-of-the-html5-lang-attribute).
 
-- **fr-FR** : French language
+
+### JSON configuration with the lazy mode
+
+```json
+{
+    "_common": {
+      "lang": "English",
+      "back": "Previous page"
+    },
+    "home": {
+      "title": "Hi little butterfly !",
+      "baseline": "Welcome to",
+      "baselineInfo": "NgServal",
+      "includes": "You're ready to code. It includes",
+      "launchApp": "Open a terminal and run",
+      "aboutTpl": "It uses a custom lodash templating cf:",
+      "aboutTpl2": "You can of course remove these templateSettings, it's located inside",
+      "aboutLink": "You can access to another page here ",
+      "aboutLink2": "or, use a button with an event listener.",
+      "aboutAnchor": "with an anchor",
+      "buttonMsg": "Next page"
+    },
+    "welcome": {
+      "message": "hey"
+    }
+  }
+```
+
+> FileName can be: "en-EN.json", we do not care. Look at the **Provider configuration**.
+
+### How does it works
+
+- **fr-FR** : French language (if no lazy mode)
 - **_common**: Translation available in each state of your application
 - **home**: Translation only for the state home
 
@@ -147,23 +181,67 @@ You can build a file per lang, so you can load only the current lang, and load a
 
 ### Configuration
 
+Configure the service from `babelfishProvider` in your app module
+
 ```JavaScript
-angular.module('servalI18n').value("custom", {
-    lang: "fr-FR", // Default lang for the app
-    lazy: true, // Activate lazy mode
-    urls: [ // Store each translation
-        {
-            lang: "fr-FR", // Name of your translation
-            url: "/i18n/fr-FR.json" // Path to the translation
-        },{
-            lang: "en-EN",
-            url: "/i18n/en-EN.json"
-        }
-    ]
-});
+angular.module('myApp')
+    .config(function(babelfishProvider) {
+
+        // Configure the i18n for this app
+        babelfishProvider.languages({
+            namespace: "", // Namespace to store your translations in the $scope
+            state: "home", // Default state of your app
+            lang: "fr-FR", // Default lang for the app
+            lazy: true, // Activate lazy mode
+            urls: [ // Store each translation
+                {
+                    lang: "fr-FR", // Name of your translation
+                    url: "/i18n/fr-FR.json" // Path to the translation
+                },{
+                    lang: "en-EN",
+                    url: "/i18n/en-EN.json"
+                }
+            ]
+        });
+
+    })
 ```
 
 It's ready.
+
+#### Default value for an app
+
+```json
+{
+    state: "home",
+    lang: "en-EN",
+    url: "/i18n/languages.json",
+    namespace: "",
+    lazy: false,
+    urls: [
+        {
+            lang: "",
+            url: ""
+        }
+    ],
+}
+```
+
+So by default, babelfish will load your translation file from `/i18n/languages.json`.
+
+The default JSON must be (*if you do not configure the Provider*):
+
+```json
+
+{
+    "en-EN" : {
+        "page": {
+            "key": "value"
+        }
+    },
+    "otherlanguage" {...}
+}
+```
 
 
 ## API
@@ -222,7 +300,7 @@ Attach this directive to a button in order to load a translation, for your appli
 
 ## Development
 
-```
+```sh
 $ browserify i18n/i18n.js > bundle.js
 $ browserify i18n/i18n.js | uglifyjs > bundle.min.js
 ```
