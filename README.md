@@ -143,23 +143,45 @@ So when the file is created, it binds the data from the default state (*home*) t
 ### Configuration
 
 ```JavaScript
-angular.module('servalI18n')
-    .value('custom', {
-        state: "home", // Default state to load
-        lang: "en-EN", // Default language
-        url: "/i18n/languages.json", // Default url
-        namespace: "", // Default namespace
-        lazy: false, // Active lazy
-        urls: [ // Files per lang when you are in lazy mode (so url is useless)
-            {
-                lang: "", // fr-FR etc.
-                url: ""
-            }
-        ]
-    })
+angular.module('myApp')
+    .config(function(babelfishProvider) {
+
+        // Configure the i18n for this app
+        babelfishProvider.languages({
+            state: "home", // Default state to load
+            lang: "en-EN", // Default language
+            url: "/i18n/languages.json", // Default url
+            namespace: "", // Default namespace
+            lazy: false, // Active lazy
+            urls: [ // Files per lang when you are in lazy mode (so url is useless)
+                {
+                    lang: "", // fr-FR etc.
+                    url: ""
+                }
+            ]
+        });
+    });
 ```
 
-> Right now the lazy mode is still unstable
+#### Default configuration
+
+```json
+{
+    "state": "home",
+    "lang": "en-EN",
+    "url": "/i18n/languages.json",
+    "namespace": "",
+    "lazy": false,
+    "urls": [
+        {
+            "lang": "",
+            "url": ""
+        }
+    ],
+}
+```
+
+So by default, babelfish will load your translation file from `/i18n/languages.json`. And load the lang `en-EN`, so you must have a key `en-EN` in the json. Then it says, your default state is home.
 
 ### Detect when you change the lang of your app
 
@@ -209,40 +231,33 @@ angular.module('myApp')
 
 It's ready.
 
-#### Default value for an app
+
+### A json for the lazy mode
 
 ```json
 {
-    state: "home",
-    lang: "en-EN",
-    url: "/i18n/languages.json",
-    namespace: "",
-    lazy: false,
-    urls: [
-        {
-            lang: "",
-            url: ""
-        }
-    ],
-}
-```
-
-So by default, babelfish will load your translation file from `/i18n/languages.json`.
-
-The default JSON must be (*if you do not configure the Provider*):
-
-```json
-
-{
-    "en-EN" : {
-        "page": {
-            "key": "value"
-        }
+    "_common": {
+      "lang": "English",
+      "back": "Previous page"
     },
-    "otherlanguage" {...}
-}
+    "home": {
+      "title": "Hi little butterfly !",
+      "baseline": "Welcome to",
+      "baselineInfo": "NgServal",
+      "includes": "You're ready to code. It includes",
+      "launchApp": "Open a terminal and run",
+      "aboutTpl": "It uses a custom lodash templating cf:",
+      "aboutTpl2": "You can of course remove these templateSettings, it's located inside",
+      "aboutLink": "You can access to another page here ",
+      "aboutLink2": "or, use a button with an event listener.",
+      "aboutAnchor": "with an anchor",
+      "buttonMsg": "Next page"
+    },
+    "welcome": {
+      "message": "hey"
+    }
+  }
 ```
-
 
 ## API
 
