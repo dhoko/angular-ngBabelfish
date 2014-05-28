@@ -156,6 +156,17 @@ module.exports = function() {
             i18n.active = true;
 
             if(i18n.data[lang]) {
+
+                /**
+                 * Prevent the error
+                 *     > TypeError: Cannot read property '$$hashKey' of undefined
+                 * cf {@link https://github.com/dhoko/serval-i18n/issues/5}
+                 */
+                if(!i18n.data[lang][page]) {
+                    i18n.data[lang][page] = {};
+                    console.warn('[serval-i18n-babelfish@setTranslation] No translation available for the page %s for the lang %s',page, lang);
+                }
+
                 angular.extend(i18n.data[lang]['_common'], {languages: i18n.available});
                 angular.extend(i18n.data[lang][page], i18n.data[lang]['_common']);
 
