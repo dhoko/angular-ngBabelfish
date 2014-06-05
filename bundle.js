@@ -50,7 +50,7 @@ module.exports = ['babelfish', '$timeout', function (babelfish, $timeout) {
  * I18n module
  * Translate your application
  */
-module.exports = angular.module('servalI18n', [])
+module.exports = angular.module('ngBabelfish', [])
     .provider('babelfish', require('./providers/babelfish'))
     .directive('i18nLoad', require('./directives/i18nLoad'))
     .directive('i18nBind', require('./directives/i18nBind'))
@@ -160,11 +160,11 @@ module.exports = function() {
                 /**
                  * Prevent the error
                  *     > TypeError: Cannot read property '$$hashKey' of undefined
-                 * cf {@link https://github.com/dhoko/serval-i18n/issues/5}
+                 * cf {@link https://github.com/dhoko/ngBabelfish/issues/5}
                  */
                 if(!i18n.data[lang][page]) {
                     i18n.data[lang][page] = {};
-                    console.warn('[serval-i18n-babelfish@setTranslation] No translation available for the page %s for the lang %s',page, lang);
+                    console.warn('[ngBabelfish-babelfish@setTranslation] No translation available for the page %s for the lang %s',page, lang);
                 }
 
                 angular.extend(i18n.data[lang]['_common'], {languages: i18n.available});
@@ -248,7 +248,14 @@ module.exports = function() {
             },
 
             get: function get(lang) {
-                return angular.extend(i18n.data[lang || i18n.current][i18n.currentState] , i18n.data[lang || i18n.current]['_common']);
+                var currentLang = i18n.data[lang || i18n.current];
+
+                if(!currentLang[i18n.currentState]) {
+                    console.warn('[ngBabelfish-babelfish@get] No translation available for the page %s for the lang %s',i18n.currentState, (lang || i18n.current));
+                    currentLang[i18n.currentState] = {};
+                }
+
+                return angular.extend(currentLang[i18n.currentState] , currentLang['_common']);
             },
 
             all: function all(lang) {
