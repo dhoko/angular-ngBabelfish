@@ -1,4 +1,4 @@
-# Angular serval i18n
+# Angular ngBabelfish
 
 Internationalization module for angular.js, it's magic !
 
@@ -6,18 +6,18 @@ Internationalization module for angular.js, it's magic !
 
 ## Install
 
-`npm install serval-i18n` or `bower install serval-i18n`
+`npm install ngBabelfish` or `bower install ngBabelfish`
 
 In your html:
 
 ```html
-<script src="bower_components/serval-i18n/bundle.js"></script>
+<script src="bower_components/ngBabelfish/bundle.js"></script>
 ```
 
 Add the dependency to your module:
 
 ```JavaScript
-angular.module('myApp',['servalI18n']);
+angular.module('myApp',['ngBabelfish']);
 ```
 
 ## Translations
@@ -114,11 +114,11 @@ You have to create a json file, cf:
 - **_common**: Translation available in each state of your application
 - **home**: Translation only for the state home
 
-> So when servalI18n binds i18n, it extends _commom with home. So you can overide a translation from _common in a state.
+> So when ngBabelfish binds i18n, it extends _commom with home. So you can overide a translation from _common in a state.
 
 ## In my application
 
-When you load the application, as *servali18n* is a dependency, it loads its own configuration before your app's config.
+When you load the application, as *ngBabelfish* is a dependency, it loads its own configuration before your app's config.
 
 Ex:
 
@@ -192,7 +192,7 @@ $rootScope.$emit('i18n:babelfish:changed', {
 });
 ```
 
-So you have to listen the scope on `servalI18n:babelfish:changed`, it gives you access to an object with two keys:
+So you have to listen the scope on `ngBabelfish:babelfish:changed`, it gives you access to an object with two keys:
 
 - **previous** : Previous language
 - **value** : Current language
@@ -269,7 +269,7 @@ It's ready.
 
 Yup, message is from your i18n. KISS.
 
-> You can configure servalI18n to use a namespace too.
+> You can configure ngBabelfish to use a namespace too.
 
 ### Service babelfish
 
