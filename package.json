@@ -4,7 +4,9 @@
   "description": "Internationalization module for angular.js, it's magic !",
   "main": "bundle.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/karma/bin/karma start karma.conf.js",
+    "build": "browserify i18n/i18n.js > bundle.js && browserify i18n/i18n.js | uglifyjs > bundle.min.js",
+    "install": "napa angular/angular.js"
   },
   "repository": {
     "type": "git",
@@ -19,5 +21,15 @@
   "bugs": {
     "url": "https://github.com/dhoko/ngBabelfish/issues"
   },
-  "homepage": "https://github.com/dhoko/ngBabelfish"
+  "homepage": "https://github.com/dhoko/ngBabelfish",
+  "devDependencies": {
+    "angular-ui-router": "^0.2.10",
+    "browserify": "^4.1.10",
+    "karma": "^0.12.16",
+    "karma-browserify": "^0.2.1",
+    "karma-chrome-launcher": "^0.1.4",
+    "karma-jasmine": "^0.1.5",
+    "karma-phantomjs-launcher": "^0.1.4",
+    "napa": "^0.4.1"
+  }
 }

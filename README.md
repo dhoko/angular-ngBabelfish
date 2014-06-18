@@ -315,7 +315,15 @@ Attach this directive to a button in order to load a translation, for your appli
 
 ## Development
 
+
+### test
+
 ```sh
-$ browserify i18n/i18n.js > bundle.js
-$ browserify i18n/i18n.js | uglifyjs > bundle.min.js
+$ npm test
+```
+
+### Build
+
+```sh
+$ npm build
 ```
