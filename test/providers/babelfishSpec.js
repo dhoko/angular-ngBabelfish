@@ -31,7 +31,7 @@ describe('ngBabelfish, please translate them all', function() {
                 state: "home", // Default state to load
                 lang: "en-EN", // Default language
                 url: urlI18n, // Default url
-                namespace: "", // Default namespace
+                namespace: "i18n", // Default namespace
                 lazy: false, // Active lazy
                 urls: [ // Files per lang when you are in lazy mode (so url is useless)
                     {
@@ -51,12 +51,8 @@ describe('ngBabelfish, please translate them all', function() {
 
     afterEach(function () {
           $httpBackend.verifyNoOutstandingExpectation();
-          // $httpBackend.verifyNoOutstandingRequest();
-        });
+    });
 
-    it('should be loaded', inject(function (babelfish) {
-        expect(babelfish).toBeDefined();
-    }));
 
     describe('Populate translations', function() {
 
@@ -70,8 +66,13 @@ describe('ngBabelfish, please translate them all', function() {
         }));
 
 
-        it('should be loaded', inject(function (babelfish) {
-            expect(babelfish.isLoaded()).toBe(true);
+        it('should have en-EN translations', inject(function (babelfish) {
+            expect(babelfish.get('en-EN')).toBeDefined();
+        }));
+
+        it('should switch to french translations', inject(function (babelfish) {
+            babelfish.updateLang('fr-FR');
+            expect(babelfish.current()).toBe('fr-FR');
         }));
     })
 });
