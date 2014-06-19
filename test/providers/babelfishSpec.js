@@ -1,27 +1,31 @@
 'use strict';
 var urlI18n = "/i18n/languages.json",
+    urlI18nFr = "/i18n/fr-FR.json",
+    urlI18nEn = "/i18n/en-EN.json",
     $httpBackend,
     scope,
+    frAnswer = {
+      "_common": {
+        "home": "Maison",
+        "currency": "€"
+      },
+      "home": {
+        "welcome_cart": "Bienvenue sur ngBabelfish"
+      }
+    },
+    enAnswer = {
+      "_common": {
+        "home": "Home",
+        "currency": "$"
+      },
+      "home": {
+        "welcome_cart": "Welcome to ngBabelfish"
+      }
+    },
     answer = {
-          "fr-FR": {
-            "_common": {
-              "home": "Maison",
-              "currency": "€"
-            },
-            "home": {
-              "welcome_cart": "Bienvenue sur ngBabelfish"
-            }
-          },
-          "en-EN": {
-            "_common": {
-              "home": "Home",
-              "currency": "$"
-            },
-            "home": {
-              "welcome_cart": "Welcome to ngBabelfish"
-            }
-          }
-        };
+      "fr-FR": frAnswer,
+      "en-EN": enAnswer
+    };
 
 describe('ngBabelfish, please translate them all', function() {
 
@@ -92,8 +96,6 @@ describe('ngBabelfish, please translate them all', function() {
 
         it('should contains our data for an known state', inject(function (babelfish) {
             babelfish.updateState('home');
-
-            expect(babelfish.get().welcome_cart).toBeDefined();
             expect(babelfish.get().welcome_cart).toBeDefined('Welcome to ngBabelfish');
             expect(Object.keys(babelfish.get()).length).toBeGreaterThan(0);
         }));
@@ -200,4 +202,93 @@ describe('Add a namespace', function(){
         expect(scope.i18n).toBeDefined();
         expect(scope.i18n.welcome_cart).toBeDefined();
     }));
+});
+
+describe('Lazy mode for translations', function() {
+
+
+    beforeEach(module('ui.router'));
+
+    beforeEach(module('ngBabelfish', function (babelfishProvider) {
+        babelfishProvider.languages({
+            namespace: 'i18n',
+            lazy: true,
+            urls: [
+                {
+                    lang: "fr-FR",
+                    url: urlI18nFr
+                },
+                {
+                    lang: "en-EN",
+                    url: urlI18nEn
+                }
+            ]
+        });
+    }));
+
+    beforeEach(inject(function ($injector) {
+        scope = $injector.get('$rootScope');
+        $httpBackend = $injector.get("$httpBackend");
+        // $httpBackend.when("GET", urlI18nFr)
+        //   .respond(200, frAnswer);
+
+        $httpBackend.when("GET", urlI18nEn)
+          .respond(200, enAnswer);
+
+        document.documentElement.lang = '';
+    }));
+
+    beforeEach(function() {
+        // $httpBackend.expectGET(urlI18nFr);
+        $httpBackend.expectGET(urlI18nEn);
+        $httpBackend.flush();
+    });
+
+    afterEach(function () {
+        $httpBackend.verifyNoOutstandingExpectation();
+    });
+
+    it('should load the en-EN lang', inject(function (babelfish) {
+        expect(babelfish.available().indexOf('en-EN') > -1).toBe(true);
+    }));
+
+    it('should only load  the en-EN lang', inject(function (babelfish) {
+        expect(babelfish.available().length).toEqual(1);
+    }));
+
+    it('should load the home translations for en-EN', inject(function (babelfish) {
+        expect(babelfish.current()).toBe('en-EN');
+    }));
+
+    it('should fill the scope with some translations', function() {
+        expect(scope.i18n).toBeDefined();
+        expect(scope.i18n.welcome_cart).toBeDefined();
+    });
+
+    it('should have home translations for en-EN', inject(function (babelfish) {
+        expect(babelfish.get().welcome_cart).toBeDefined('Welcome to ngBabelfish');
+    }));
+
+    describe('switch to another langage', function() {
+
+        beforeEach(inject(function ($injector) {
+            $httpBackend = $injector.get("$httpBackend");
+            $httpBackend.when("GET", urlI18nFr)
+              .respond(200, frAnswer);
+        }));
+
+        beforeEach(function() {
+            $httpBackend.expectGET(urlI18nFr);
+        });
+
+        afterEach(function () {
+            $httpBackend.verifyNoOutstandingExpectation();
+        });
+
+        it('should switch to french translations', inject(function (babelfish) {
+            babelfish.updateLang('fr-FR');
+            expect(document.documentElement.lang).toBe('fr');
+            expect(babelfish.current()).toBe('fr-FR');
+        }));
+    });
 });

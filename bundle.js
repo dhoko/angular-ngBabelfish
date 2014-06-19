@@ -279,6 +279,10 @@ module.exports = function() {
             updateLang: loadLanguage,
             isLoaded: function isLoaded() {
                 return i18n.active;
+            },
+
+            available: function(){
+                return i18n.available;
             }
         };
 

@@ -214,6 +214,9 @@ module.exports = function() {
             updateLang: loadLanguage,
             isLoaded: function isLoaded() {
                 return i18n.active;
+            },
+            available: function available(){
+                return i18n.available;
             }
         };
 
