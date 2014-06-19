@@ -3,7 +3,7 @@
  * i18nBind directive
  * Load a translation for a var
  */
-module.exports = ['babelfish', function(babelfish) {
+module.exports = ['babelfish', function (babelfish) {
 
     return {
         restrict: "A",
@@ -38,7 +38,7 @@ module.exports = ['babelfish', function(babelfish) {
  * Translate a string to another language
  * {{ name | translate:'fr-FR':"name"}}
  */
-module.exports = ['babelfish', '$timeout', function (babelfish, $timeout) {
+module.exports = ['babelfish', function (babelfish) {
 
     return function (input, lang, key) {
         return babelfish.get(lang)[key];
