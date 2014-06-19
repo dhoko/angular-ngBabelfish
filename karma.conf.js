@@ -7,11 +7,11 @@ module.exports = function(config) {
     frameworks: ['jasmine'],
     // list of files / patterns to load in the browser
     files: [
-      'node_modules/angular/lib/angular.min.js',
-      'node_modules/angular.js/src/ngMock/angular-mocks.js',
+      'test/libs/angular/angular.min.js',
+      'test/libs/angular-mocks/angular-mocks.js',
       'node_modules/angular-ui-router/release/angular-ui-router.min.js',
       'dist/bundle.js',
-      'test/**/*'
+      'test/specs/**/*'
     ],
 
     exclude: [],
