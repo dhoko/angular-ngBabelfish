@@ -16,7 +16,7 @@ module.exports = function(config) {
 
     exclude: [],
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-    reporters: ['progress'],
+    reporters: ['progress','coverage'],
 
     port: 9876,
     runnerPort: 9100,
@@ -24,8 +24,8 @@ module.exports = function(config) {
     logLevel: config.LOG_WARN,
     autoWatch: true,
 
-    browsers: ['Chrome', 'PhantomJS'],
-    // browsers: ['PhantomJS'],
+    // browsers: ['Chrome', 'PhantomJS'],
+    browsers: ['PhantomJS'],
     captureTimeout: 60000,
 
     singleRun: false,
@@ -34,7 +34,13 @@ module.exports = function(config) {
     // },
 
     // Add browserify to preprocessors
-    // preprocessors: {'test/**/*'}
+    preprocessors: {
+        'src/**/*.js': ['coverage']
+    },
+    coverageReporter: {
+      type : 'html',
+      dir : 'coverage/'
+    }
 
   });
 };

@@ -5,7 +5,7 @@
   "main": "bundle.js",
   "scripts": {
     "test": "./node_modules/karma/bin/karma start karma.conf.js",
-    "build": "browserify i18n/i18n.js > dist/bundle.js && browserify i18n/i18n.js | uglifyjs > dist/bundle.min.js",
+    "build": "node ./node_modules/browserify/bin/cmd.js i18n/i18n.js > dist/bundle.js && node ./node_modules/browserify/bin/cmd.js i18n/i18n.js | uglifyjs > dist/bundle.min.js",
     "install": "napa angular/angular.js"
   },
   "repository": {
@@ -28,6 +28,7 @@
     "karma": "^0.12.16",
     "karma-browserify": "^0.2.1",
     "karma-chrome-launcher": "^0.1.4",
+    "karma-coverage": "^0.2.4",
     "karma-jasmine": "^0.1.5",
     "karma-phantomjs-launcher": "^0.1.4",
     "napa": "^0.4.1"
