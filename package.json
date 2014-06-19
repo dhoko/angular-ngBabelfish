@@ -5,8 +5,7 @@
   "main": "dist/bundle.js",
   "scripts": {
     "test": "./node_modules/karma/bin/karma start karma.conf.js",
-    "build": "node ./node_modules/browserify/bin/cmd.js i18n/i18n.js > dist/bundle.js && node ./node_modules/browserify/bin/cmd.js i18n/i18n.js | uglifyjs > dist/bundle.min.js",
-    "install": "napa angular/angular.js"
+    "build": "node ./node_modules/browserify/bin/cmd.js i18n/i18n.js > dist/bundle.js && node ./node_modules/browserify/bin/cmd.js i18n/i18n.js | uglifyjs > dist/bundle.min.js"
   },
   "repository": {
     "type": "git",
