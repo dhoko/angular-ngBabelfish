@@ -2,7 +2,7 @@
  * i18nBind directive
  * Load a translation for a var
  */
-module.exports = ['babelfish', function(babelfish) {
+module.exports = ['babelfish', function (babelfish) {
 
     return {
         restrict: "A",

@@ -1,4 +1,2 @@
 node_modules/
-build/
-app/components/
-i18n/languages.json
+coverage/

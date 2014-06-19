@@ -188,8 +188,13 @@ module.exports = function() {
         function loadLanguage(lang) {
 
             var old = document.documentElement.lang;
+
+            if(!old) {
+                old = 'en';
+            }
+
             if(!lang) {
-                lang =  (old + '-' + old.toUpperCase()) || 'en-EN';
+                lang = old + '-' + old.toUpperCase();
             }else {
                 document.documentElement.lang = lang.split('-')[0];
             }
@@ -218,6 +223,11 @@ module.exports = function() {
             load: function load(url, name) {
 
                 url = url || loadLazyDefaultUrl();
+
+                // Set the default lang for the html
+                if(!document.documentElement.lang && config.lang) {
+                    document.documentElement.lang = config.lang.split('-')[0];
+                }
 
                 var lang = config.lang || document.documentElement.lang + '-' + document.documentElement.lang.toUpperCase();
 
@@ -269,6 +279,9 @@ module.exports = function() {
             updateLang: loadLanguage,
             isLoaded: function isLoaded() {
                 return i18n.active;
+            },
+            available: function available(){
+                return i18n.available;
             }
         };
 

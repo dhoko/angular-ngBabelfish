@@ -11,7 +11,7 @@ Internationalization module for angular.js, it's magic !
 In your html:
 
 ```html
-<script src="bower_components/ngBabelfish/bundle.js"></script>
+<script src="bower_components/dist/ngBabelfish/bundle.js"></script>
 ```
 
 Add the dependency to your module:
@@ -315,7 +315,15 @@ Attach this directive to a button in order to load a translation, for your appli
 
 ## Development
 
+
+### test
+
 ```sh
-$ browserify i18n/i18n.js > bundle.js
-$ browserify i18n/i18n.js | uglifyjs > bundle.min.js
+$ npm test
+```
+
+### Build
+
+```sh
+$ npm run build
 ```
