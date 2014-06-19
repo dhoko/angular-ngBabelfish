@@ -188,8 +188,13 @@ module.exports = function() {
         function loadLanguage(lang) {
 
             var old = document.documentElement.lang;
+
+            if(!old) {
+                old = 'en';
+            }
+
             if(!lang) {
-                lang =  (old + '-' + old.toUpperCase()) || 'en-EN';
+                lang = old + '-' + old.toUpperCase();
             }else {
                 document.documentElement.lang = lang.split('-')[0];
             }
@@ -220,6 +225,11 @@ module.exports = function() {
                 url = url || loadLazyDefaultUrl();
 
                 var lang = config.lang || document.documentElement.lang + '-' + document.documentElement.lang.toUpperCase();
+
+                // Set the default lang for the html
+                if(!document.documentElement.lang && config.lang) {
+                    document.documentElement.lang = config.lang.split('-')[0];
+                }
 
                 if(i18n.data[i18n.current]) {
                     return;

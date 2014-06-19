@@ -121,8 +121,13 @@ module.exports = function() {
         function loadLanguage(lang) {
 
             var old = document.documentElement.lang;
+
+            if(!old) {
+                old = 'en';
+            }
+
             if(!lang) {
-                lang =  (old + '-' + old.toUpperCase()) || 'en-EN';
+                lang = old + '-' + old.toUpperCase();
             }else {
                 document.documentElement.lang = lang.split('-')[0];
             }
@@ -151,6 +156,13 @@ module.exports = function() {
             load: function load(url, name) {
 
                 url = url || loadLazyDefaultUrl();
+
+                // Set the default lang for the html
+                if(!document.documentElement.lang && config.lang) {
+                    document.documentElement.lang = config.lang.split('-')[0];
+                }else {
+                    throw new Error('You must define a lang in your dom or from the provider');
+                }
 
                 var lang = config.lang || document.documentElement.lang + '-' + document.documentElement.lang.toUpperCase();
 
