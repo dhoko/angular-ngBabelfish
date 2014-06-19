@@ -160,8 +160,6 @@ module.exports = function() {
                 // Set the default lang for the html
                 if(!document.documentElement.lang && config.lang) {
                     document.documentElement.lang = config.lang.split('-')[0];
-                }else {
-                    throw new Error('You must define a lang in your dom or from the provider');
                 }
 
                 var lang = config.lang || document.documentElement.lang + '-' + document.documentElement.lang.toUpperCase();

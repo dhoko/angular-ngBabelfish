@@ -11,7 +11,7 @@ Internationalization module for angular.js, it's magic !
 In your html:
 
 ```html
-<script src="bower_components/ngBabelfish/bundle.js"></script>
+<script src="bower_components/dist/ngBabelfish/bundle.js"></script>
 ```
 
 Add the dependency to your module:
@@ -325,5 +325,5 @@ $ npm test
 ### Build
 
 ```sh
-$ npm build
+$ npm run build
 ```

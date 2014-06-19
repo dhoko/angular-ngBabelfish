@@ -10,7 +10,7 @@ module.exports = function(config) {
       'node_modules/angular/lib/angular.min.js',
       'node_modules/angular.js/src/ngMock/angular-mocks.js',
       'node_modules/angular-ui-router/release/angular-ui-router.min.js',
-      'bundle.js',
+      'dist/bundle.js',
       'test/**/*'
     ],
 
@@ -24,8 +24,8 @@ module.exports = function(config) {
     logLevel: config.LOG_WARN,
     autoWatch: true,
 
-    // browsers: ['Chrome', 'PhantomJS'],
-    browsers: ['PhantomJS'],
+    browsers: ['Chrome', 'PhantomJS'],
+    // browsers: ['PhantomJS'],
     captureTimeout: 60000,
 
     singleRun: false,

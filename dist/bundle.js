@@ -224,12 +224,12 @@ module.exports = function() {
 
                 url = url || loadLazyDefaultUrl();
 
-                var lang = config.lang || document.documentElement.lang + '-' + document.documentElement.lang.toUpperCase();
-
                 // Set the default lang for the html
                 if(!document.documentElement.lang && config.lang) {
                     document.documentElement.lang = config.lang.split('-')[0];
                 }
+
+                var lang = config.lang || document.documentElement.lang + '-' + document.documentElement.lang.toUpperCase();
 
                 if(i18n.data[i18n.current]) {
                     return;
@@ -280,8 +280,7 @@ module.exports = function() {
             isLoaded: function isLoaded() {
                 return i18n.active;
             },
-
-            available: function(){
+            available: function available(){
                 return i18n.available;
             }
         };
