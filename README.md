@@ -1,5 +1,5 @@
 # Angular ngBabelfish - [![Build Status](https://api.travis-ci.org/dhoko/ngBabelfish.png?branch=master)](https://travis-ci.org/dhoko/ngBabelfish)
- 
+
 Internationalization module for angular.js, it's magic !
 
 > It's working with [Angular UI-Router](https://github.com/angular-ui/ui-router/)
@@ -11,7 +11,7 @@ Internationalization module for angular.js, it's magic !
 In your html:
 
 ```html
-<script src="bower_components/dist/ngBabelfish/bundle.js"></script>
+<script src="bower_components/ngBabelfish/dist/bundle.js"></script>
 ```
 
 Add the dependency to your module:
