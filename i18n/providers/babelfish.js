@@ -186,12 +186,12 @@ module.exports = function() {
                         }
                     })
                     .then(function() {
-                        setTranslation();
+                        setTranslation(i18n.currentState);
                     });
             },
 
             get: function get(lang) {
-                var currentLang = i18n.data[lang || i18n.current];
+                var currentLang = i18n.data[lang || i18n.current] || {};
 
                 if(!currentLang[i18n.currentState]) {
                     console.warn('[ngBabelfish-babelfish@get] No translation available for the page %s for the lang %s',i18n.currentState, (lang || i18n.current));
