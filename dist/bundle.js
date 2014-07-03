@@ -153,7 +153,8 @@ module.exports = function() {
             page = page || config.state;
             i18n.currentState = page;
             lang = i18n.current;
-            i18n.active = true;
+            i18n.active = true,
+            common = {}, currentPageTranslation = {};
 
             if(i18n.data[lang]) {
 
@@ -167,13 +168,13 @@ module.exports = function() {
                     console.warn('[ngBabelfish-babelfish@setTranslation] No translation available for the page %s for the lang %s',page, lang);
                 }
 
-                angular.extend(i18n.data[lang]['_common'], {languages: i18n.available});
-                angular.extend(i18n.data[lang][page], i18n.data[lang]['_common']);
+                angular.extend(common, i18n.data[lang]['_common']);
+                currentPageTranslation = angular.extend(common, {languages: i18n.available}, i18n.data[lang][page]);
 
                 if(config.namespace) {
-                    $rootScope[config.namespace] = i18n.data[lang][page];
+                    $rootScope[config.namespace] = currentPageTranslation;
                 }else {
-                    angular.extend($rootScope, i18n.data[lang][page]);
+                    angular.extend($rootScope, currentPageTranslation);
                 }
             }
         }
@@ -253,33 +254,70 @@ module.exports = function() {
                         }
                     })
                     .then(function() {
-                        setTranslation();
+                        setTranslation(i18n.currentState);
                     });
             },
 
+            /**
+             * Return the current state translation
+             * @param  {String} lang
+             * @return {Object}
+             */
             get: function get(lang) {
-                var currentLang = i18n.data[lang || i18n.current];
+                var currentLang = i18n.data[lang || i18n.current] || {},
+                    common = {}, currentStateTranslations = {};
 
                 if(!currentLang[i18n.currentState]) {
                     console.warn('[ngBabelfish-babelfish@get] No translation available for the page %s for the lang %s',i18n.currentState, (lang || i18n.current));
                     currentLang[i18n.currentState] = {};
                 }
 
-                return angular.extend(currentLang[i18n.currentState] , currentLang['_common']);
+                angular.extend(common, {}, currentLang['_common']);
+                return angular.extend(common, currentLang[i18n.currentState]);;
             },
 
+            /**
+             * Get all traductions available for a lang
+             * @param  {String} lang
+             * @return {Object}
+             */
             all: function all(lang) {
                 return i18n.data[lang || i18n.current];
             },
 
+            /**
+             * Get the current Language
+             * @return {String} lang
+             */
             current: function current() {
                 return i18n.current;
             },
+
+            /**
+             * Update translations for a state
+             * @param  {String} state
+             */
             updateState: setTranslation,
+
+            /**
+             * Update the lang for the application
+             * It will load a new language
+             * @param  {String} lang
+             */
             updateLang: loadLanguage,
+
+            /**
+             * Check if we have loaded i18n
+             * @return {Boolean}
+             */
             isLoaded: function isLoaded() {
                 return i18n.active;
             },
+
+            /**
+             * List each languages available for the application
+             * @return {Array}
+             */
             available: function available(){
                 return i18n.available;
             }
