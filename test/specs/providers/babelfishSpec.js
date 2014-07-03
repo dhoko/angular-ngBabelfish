@@ -7,19 +7,29 @@ var urlI18n = "/i18n/languages.json",
     frAnswer = {
       "_common": {
         "home": "Maison",
-        "currency": "€"
+        "currency": "€",
+        "welcome_cart": "titre"
+      },
+      "test": {
+        "page": "test page"
       },
       "home": {
-        "welcome_cart": "Bienvenue sur ngBabelfish"
+        "welcome_cart": "Bienvenue sur ngBabelfish",
+        "custom": "bonjour"
       }
     },
     enAnswer = {
       "_common": {
         "home": "Home",
-        "currency": "$"
+        "currency": "$",
+        "welcome_cart": "title"
+      },
+      "test": {
+        "page": "test page"
       },
       "home": {
-        "welcome_cart": "Welcome to ngBabelfish"
+        "welcome_cart": "Welcome to ngBabelfish",
+        "custom": "hello"
       }
     },
     answer = {
@@ -28,6 +38,8 @@ var urlI18n = "/i18n/languages.json",
     };
 
 describe('ngBabelfish, please translate them all', function() {
+
+    var scope;
 
     beforeEach(module('ui.router'));
 
@@ -39,6 +51,9 @@ describe('ngBabelfish, please translate them all', function() {
         $httpBackend = $injector.get("$httpBackend");
         $httpBackend.when("GET", urlI18n)
           .respond(200, answer);
+
+        scope = $injector.get('$rootScope');
+
     }));
 
     beforeEach(function() {
@@ -55,8 +70,6 @@ describe('ngBabelfish, please translate them all', function() {
 
         it('should be loaded', inject(function (babelfish) {
             expect(babelfish.isLoaded()).toBe(true);
-            expect(babelfish.all()).toBeDefined();
-            expect(babelfish.all()['_common']).toBeDefined();
         }));
 
         it('should have some translations available', inject(function (babelfish) {
@@ -68,10 +81,20 @@ describe('ngBabelfish, please translate them all', function() {
             expect(babelfish.all()['_common'].currency).toBe('$');
         }));
 
+        it('should have been Populate the scope', function() {
+            expect(scope.currency).toBeDefined();
+            expect(scope.currency).toBe('$');
+        });
+
         it('should have en-EN translations', inject(function (babelfish) {
             expect(babelfish.current()).toBe('en-EN');
             expect(babelfish.get('en-EN')).toBeDefined();
-            expect(babelfish.get().welcome_cart).toBeDefined('Welcome to ngBabelfish');
+        }));
+
+        it('should overide sharred keys with the current keys for a page', inject(function (babelfish) {
+            expect(babelfish.all()['_common'].welcome_cart).toBe('title');
+            expect(babelfish.get().welcome_cart).toBe('Welcome to ngBabelfish');
+            expect(scope.welcome_cart).toBeDefined('Welcome to ngBabelfish');
         }));
 
         it('should switch to french translations', inject(function (babelfish) {
@@ -172,6 +195,8 @@ describe('Loading a wrong file', function(){
 
 describe('Add a namespace', function(){
 
+    var scope;
+
     beforeEach(module('ui.router'));
 
     beforeEach(module('ngBabelfish', function (babelfishProvider) {
@@ -200,7 +225,10 @@ describe('Add a namespace', function(){
 
     it('should contains translations inside i18n key', inject(function (babelfish) {
         expect(scope.i18n).toBeDefined();
-        expect(scope.i18n.welcome_cart).toBeDefined();
+    }));
+
+    it('should have teh content from each page', inject(function (babelfish) {
+        expect(scope.i18n.welcome_cart).toBe("Welcome to ngBabelfish");
     }));
 });
 
