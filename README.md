@@ -275,13 +275,13 @@ Yup, message is from your i18n. KISS.
 
 API:
 
-- 'babelfish.load(url)': Load a translation (default url = i18n/languages.json)
-- 'babelfish.get(lang)': Return all translations for a lang per state
-- 'babelfish.all(lang)': Return all translations for a lang
-- 'babelfish.current()': Return the current lang
-- 'babelfish.updateLang(lang)': Load new translation for a lang in your app
-- 'babelfish.updateState(state)': Bind current translation for a state
-- 'babelfish.isLoaded()': Detect if your i18n is loaded
+- `babelfish.load(url)` : Load a translation (default url = i18n/languages.json)
+- `babelfish.get(lang)` : Return all translations for a lang per state
+- `babelfish.all(lang)` : Return all translations for a lang
+- `babelfish.current()` : Return the current lang
+- `babelfish.updateLang(lang)` : Load new translation for a lang in your app
+- `babelfish.updateState(state)` : Bind current translation for a state
+- `babelfish.isLoaded()` : Detect if your i18n is loaded
 
 ### Filter translate
 
@@ -315,6 +315,15 @@ Attach this directive to a button in order to load a translation, for your appli
 
 ## Development
 
+> You can remove ngBabelfish warnings for your tests, just inject the provider and set the key log to false
+
+```JavaScript
+ beforeEach(module('ngBabelfish', function (babelfishProvider) {
+    babelfishProvider.languages({
+        log: false
+    });
+}));
+```
 
 ### test
 

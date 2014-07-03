@@ -29,7 +29,8 @@ module.exports = function() {
                 url: ""
             }
         ],
-        current: ""
+        current: "",
+        log: true
     };
 
     /**
@@ -98,7 +99,10 @@ module.exports = function() {
                  */
                 if(!i18n.data[lang][page]) {
                     i18n.data[lang][page] = {};
-                    console.warn('[ngBabelfish-babelfish@setTranslation] No translation available for the page %s for the lang %s',page, lang);
+
+                    if(config.log) {
+                        console.warn('[ngBabelfish-babelfish@setTranslation] No translation available for the page %s for the lang %s',page, lang);
+                    }
                 }
 
                 angular.extend(common, i18n.data[lang]['_common']);
@@ -201,7 +205,10 @@ module.exports = function() {
                     common = {}, currentStateTranslations = {};
 
                 if(!currentLang[i18n.currentState]) {
-                    console.warn('[ngBabelfish-babelfish@get] No translation available for the page %s for the lang %s',i18n.currentState, (lang || i18n.current));
+
+                    if(config.log) {
+                        console.warn('[ngBabelfish-babelfish@get] No translation available for the page %s for the  lang %s',i18n.currentState, (lang || i18n.current));
+                    }
                     currentLang[i18n.currentState] = {};
                 }
 
