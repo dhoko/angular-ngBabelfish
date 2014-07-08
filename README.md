@@ -186,16 +186,29 @@ So by default, babelfish will load your translation file from `/i18n/languages.j
 ### Detect when you change the lang of your app
 
 ```JavaScript
-$rootScope.$emit('i18n:babelfish:changed', {
+$rootScope.$emit('ngBabelfish.translation:changed', {
     previous: (old + '-' + old.toUpperCase()),
     value: lang
 });
 ```
 
-So you have to listen the scope on `ngBabelfish:babelfish:changed`, it gives you access to an object with two keys:
+So you have to listen the scope on `ngBabelfish.translation:changed`, it gives you access to an object with two keys:
 
 - **previous** : Previous language
 - **value** : Current language
+
+### Detect when you load another/a new lang for your app
+
+```JavaScript
+$rootScope.$emit('ngBabelfish.translation:loaded', {
+    currentState: page,
+    lang: lang
+});
+```
+So you have to listen the scope on `ngBabelfish.translation:loaded`, it gives you access to an object with two keys:
+
+- **currentState**: current state
+- **lang**: current lang for the application
 
 ## Lazy Loading
 
