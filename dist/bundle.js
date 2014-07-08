@@ -180,6 +180,11 @@ module.exports = function() {
                 }else {
                     angular.extend($rootScope, currentPageTranslation);
                 }
+
+                $rootScope.$emit('ngBabelfish.translation:loaded', {
+                    currentState: page,
+                    lang: lang
+                });
             }
         }
 
@@ -206,7 +211,7 @@ module.exports = function() {
 
             config.lang = i18n.current = lang;
 
-            $rootScope.$emit('i18n:babelfish:changed', {
+            $rootScope.$emit('ngBabelfish.translation:changed', {
                 previous: (old + '-' + old.toUpperCase()),
                 value: lang
             });
@@ -219,7 +224,7 @@ module.exports = function() {
         }
 
         // Listen when you change the language in your application
-        $rootScope.$on('i18n:babelfish:changed', function() {
+        $rootScope.$on('ngBabelfish.translation:changed', function() {
             setTranslation(i18n.currentState);
         });
 

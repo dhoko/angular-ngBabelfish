@@ -146,7 +146,7 @@ describe('ngBabelfish, please translate them all', function() {
         it('should trigger en event when we change the lang', inject(function (babelfish) {
 
             babelfish.updateLang('fr-FR');
-            expect(scope.$emit).toHaveBeenCalledWith('i18n:babelfish:changed', {
+            expect(scope.$emit).toHaveBeenCalledWith('ngBabelfish.translation:changed', {
                 previous: 'en-EN',
                 value: 'fr-FR'
             });
@@ -155,9 +155,19 @@ describe('ngBabelfish, please translate them all', function() {
         it('should trigger en event when we change the lang and its not defined', inject(function (babelfish) {
 
             babelfish.updateLang();
-            expect(scope.$emit).toHaveBeenCalledWith('i18n:babelfish:changed', {
+            expect(scope.$emit).toHaveBeenCalledWith('ngBabelfish.translation:changed', {
                 previous: 'en-EN',
                 value: 'en-EN'
+            });
+        }));
+
+
+        it('should trigger en event when we load another language', inject(function (babelfish) {
+
+            babelfish.updateState('test');
+            expect(scope.$emit).toHaveBeenCalledWith('ngBabelfish.translation:loaded', {
+                currentState: 'test',
+                lang: 'en-EN'
             });
         }));
 
