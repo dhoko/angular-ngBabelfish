@@ -313,6 +313,34 @@ Attach this directive to a button in order to load a translation, for your appli
 <button type="button" data-i18n-load="en-EN">Load english translation for the app</button>
 ```
 
+### Events
+
+
+#### ngBabelfish.translation:changed
+
+When you change the language of your application.
+Ex: `babelfish.updateLang('fr-FR');`
+
+```
+{
+    previous: 'en-EN',
+    value: 'fr-FR'
+}
+```
+
+#### ngBabelfish.translation:loaded
+
+When you change the current state.
+Ex: `babelfish.updateState('test');`
+
+```
+{
+    currentState: 'test',
+    lang: 'en-EN'
+}
+```
+
+
 ## Development
 
 > You can remove ngBabelfish warnings for your tests, just inject the provider and set the key log to false
