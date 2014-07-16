@@ -159,7 +159,7 @@ module.exports = function() {
     /**
      * Babelfish service
      */
-    this.$get = ['$rootScope', '$http', function($rootScope, $http) {
+    this.$get = ['$rootScope', '$http', function ($rootScope, $http) {
 
         /**
          * Load a translation to the $scope
@@ -377,19 +377,7 @@ module.exports = function() {
              * @return {String}
              */
             getEvent: function getEvent() {
-              return config.eventName;
-            },
-
-            getConfig: function getConfig() {
-                return config;
-            },
-
-            /**
-             * Check if we use a namespace or not
-             * @return {Boolean}
-             */
-            hasNamespace: function hasNamespace() {
-                return !!config.namespace;
+                return config.eventName;
             }
         };
 

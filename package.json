@@ -1,6 +1,6 @@
 {
   "name": "ng-babelfish",
-  "version": "1.4.2",
+  "version": "1.5.0",
   "description": "Internationalization module for angular.js, it's magic !",
   "main": "dist/bundle.js",
   "scripts": {
