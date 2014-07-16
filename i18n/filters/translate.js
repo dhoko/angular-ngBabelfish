@@ -5,6 +5,8 @@
  */
 module.exports = ['babelfish', function (babelfish) {
 
+    "use strict";
+
     return function (input, lang, key) {
         return babelfish.get(lang)[key];
     }

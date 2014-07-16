@@ -8,7 +8,7 @@
   "boss": true,
   "eqnull": true,
   "browser": true,
-  "strict": false,
+  "strict": true,
   "trailing": true,
   "smarttabs": true,
   "maxparams": 3,

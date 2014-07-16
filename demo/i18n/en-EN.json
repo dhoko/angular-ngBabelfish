@@ -1,0 +1,9 @@
+{
+  "_common": {
+      "version": "1.4.2"
+  },
+  "home": {
+      "title": "ngBabelfish demonstration",
+      "about": "Internationalization module for angular.js, it's magic !"
+  }
+}

@@ -10,7 +10,7 @@ module.exports = angular.module('ngBabelfish', [])
     .run(['babelfish', '$state','$rootScope', function(babelfish, $state, $rootScope) {
 
         // Update the translation when you change a page
-        $rootScope.$on('$stateChangeSuccess', function(e, toState) {
+        $rootScope.$on(babelfish.getEvent(), function(e, toState) {
             babelfish.updateState(toState.name);
         });
 

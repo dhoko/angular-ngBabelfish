@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en" data-ng-app="ngBabelfishDemo">
+<head>
+    <meta charset="UTF-8">
+    <title>ngBabelfish - default</title>
+</head>
+<body>
+    <span data-i18n-bind="version"></span>
+    <ul>
+        <li><button data-i18n-load="fr-FR">French</button></li>
+        <li><button data-i18n-load="en-EN">English</button></li>
+    </ul>
+
+    <a ui-sref="config">config</a>
+    <div id="content" data-ui-view></div>
+    <script src="bower_components/angular/lib/angular.min.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="../dist/bundle.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
