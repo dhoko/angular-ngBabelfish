@@ -1,0 +1,20 @@
+{
+    "en-EN": {
+        "_common": {
+            "version": "1.4.2"
+        },
+        "home": {
+            "title": "ngBabelfish demonstration",
+            "about": "Internationalization module for angular.js, it's magic !"
+        }
+    },
+    "fr-FR": {
+        "_common": {
+            "version": "1.4.2"
+        },
+        "home": {
+            "title": "La démonstration ngBabelfish",
+            "about": "Un module d'internationalisation pour Angular. C'est simple et magique !"
+        }
+    }
+}
