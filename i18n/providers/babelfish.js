@@ -106,7 +106,7 @@ module.exports = function() {
                 }
 
                 angular.extend(common, i18n.data[lang]['_common']);
-                currentPageTranslation = angular.extend(common, {languages: i18n.available}, i18n.data[lang][page]);
+                currentPageTranslation = angular.extend(common, i18n.data[lang][page]);
 
                 if(config.namespace) {
                     $rootScope[config.namespace] = currentPageTranslation;
