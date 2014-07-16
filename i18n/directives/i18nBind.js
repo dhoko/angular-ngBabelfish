@@ -4,16 +4,15 @@
  */
 module.exports = ['babelfish', function (babelfish) {
 
-    "use strict";
+    'use strict';
 
     return {
         restrict: "A",
         link: function(scope,el,attr) {
-            el.on('click',function() {
-                scope.$apply(function() {
-                    babelfish.updateLang(attr.i18nLoad);
-                });
-            });
+
+          scope.$on('ngBabelfish.translation:loaded', function() {
+            el.html(babelfish.get(attr.i18nBindLang || babelfish.current() )[attr.i18nBind]);
+          });
         }
     };
 

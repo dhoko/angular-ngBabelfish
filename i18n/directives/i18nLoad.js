@@ -2,7 +2,7 @@
  * i18nLoad directive
  * Load a translation from a click on a button with the attr i18n-load
  */
-module.exports = ['babelfish', function(babelfish) {
+module.exports = ['babelfish', function (babelfish) {
 
     "use strict";
 

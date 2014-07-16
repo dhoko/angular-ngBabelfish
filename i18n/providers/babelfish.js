@@ -82,7 +82,7 @@ module.exports = function() {
     /**
      * Babelfish service
      */
-    this.$get = ['$rootScope', '$http', function($rootScope, $http) {
+    this.$get = ['$rootScope', '$http', function ($rootScope, $http) {
 
         /**
          * Load a translation to the $scope
@@ -100,9 +100,9 @@ module.exports = function() {
             }
 
             i18n.currentState = page;
-            lang = i18n.current;
             i18n.active = true;
 
+            var lang = i18n.current;
             var common = {}, currentPageTranslation = {};
 
             if(i18n.data[lang]) {
@@ -300,7 +300,7 @@ module.exports = function() {
              * @return {String}
              */
             getEvent: function getEvent() {
-              return config.eventName;
+                return config.eventName;
             }
         };
 

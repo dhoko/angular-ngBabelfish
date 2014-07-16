@@ -5,20 +5,28 @@
  */
 module.exports = ['babelfish', function (babelfish) {
 
+    'use strict';
+
     return {
         restrict: "A",
         link: function(scope,el,attr) {
-            el.append(babelfish.get(attr.i18nBindLang || babelfish.current() )[attr.i18nBind]);
+
+          scope.$on('ngBabelfish.translation:loaded', function() {
+            el.html(babelfish.get(attr.i18nBindLang || babelfish.current() )[attr.i18nBind]);
+          });
         }
-    }
+    };
 
 }];
+
 },{}],2:[function(require,module,exports){
 /**
  * i18nLoad directive
  * Load a translation from a click on a button with the attr i18n-load
  */
-module.exports = ['babelfish', function(babelfish) {
+module.exports = ['babelfish', function (babelfish) {
+
+    "use strict";
 
     return {
         restrict: "A",
@@ -29,7 +37,7 @@ module.exports = ['babelfish', function(babelfish) {
                 });
             });
         }
-    }
+    };
 
 }];
 },{}],3:[function(require,module,exports){
@@ -39,6 +47,8 @@ module.exports = ['babelfish', function(babelfish) {
  * {{ name | translate:'fr-FR':"name"}}
  */
 module.exports = ['babelfish', function (babelfish) {
+
+    "use strict";
 
     return function (input, lang, key) {
         return babelfish.get(lang)[key];
@@ -58,7 +68,7 @@ module.exports = angular.module('ngBabelfish', [])
     .run(['babelfish', '$state','$rootScope', function(babelfish, $state, $rootScope) {
 
         // Update the translation when you change a page
-        $rootScope.$on('$stateChangeSuccess', function(e, toState) {
+        $rootScope.$on(babelfish.getEvent(), function(e, toState) {
             babelfish.updateState(toState.name);
         });
 
@@ -72,13 +82,17 @@ module.exports = angular.module('ngBabelfish', [])
  */
 module.exports = function() {
 
+    "use strict";
+
     var i18n = {
         current: "",
         data: {},
         available: [],
         currentState: "",
-        active: false
-    }
+        active: false,
+        previousLang: '',
+        stateLoaded: false
+    };
 
     /**
      * Default configuration for the module
@@ -88,6 +102,7 @@ module.exports = function() {
         state: "home",
         lang: "en-EN",
         url: "/i18n/languages.json",
+        eventName: '$stateChangeSuccess',
         namespace: "",
         lazy: false,
         urls: [
@@ -136,7 +151,10 @@ module.exports = function() {
      */
     this.languages = function languagesConfig(params) {
         angular.extend(config, params);
-    }
+
+        // Default previous lang will be the config's one
+        i18n.previousLang = config.lang;
+    };
 
     /**
      * Babelfish service
@@ -152,10 +170,17 @@ module.exports = function() {
         function setTranslation(page) {
 
             page = page || config.state;
+
+            // Prevent too many digest
+            if(i18n.currentState === page && i18n.stateLoaded && i18n.current === i18n.previousLang) {
+              return;
+            }
+
             i18n.currentState = page;
-            lang = i18n.current;
-            i18n.active = true,
-            common = {}, currentPageTranslation = {};
+            i18n.active = true;
+
+            var lang = i18n.current;
+            var common = {}, currentPageTranslation = {};
 
             if(i18n.data[lang]) {
 
@@ -172,8 +197,8 @@ module.exports = function() {
                     }
                 }
 
-                angular.extend(common, i18n.data[lang]['_common']);
-                currentPageTranslation = angular.extend(common, {languages: i18n.available}, i18n.data[lang][page]);
+                angular.extend(common, i18n.data[lang]._common);
+                currentPageTranslation = angular.extend(common, i18n.data[lang][page]);
 
                 if(config.namespace) {
                     $rootScope[config.namespace] = currentPageTranslation;
@@ -185,6 +210,8 @@ module.exports = function() {
                     currentState: page,
                     lang: lang
                 });
+
+                i18n.stateLoaded = true;
             }
         }
 
@@ -203,10 +230,13 @@ module.exports = function() {
                 old = 'en';
             }
 
+            // Find the current lang if it doesn't exist. Store the previous one too
             if(!lang) {
                 lang = old + '-' + old.toUpperCase();
+                i18n.previousLang = lang;
             }else {
                 document.documentElement.lang = lang.split('-')[0];
+                i18n.previousLang = old + '-' + old.toUpperCase();
             }
 
             config.lang = i18n.current = lang;
@@ -257,7 +287,7 @@ module.exports = function() {
                         buildI18n(data);
 
                         if(config.lazy) {
-                            i18n.available.push(i18n.current);
+                            i18n.available = config.urls.map(function (item) {return item.lang;});
                         }else {
                             i18n.available = Object.keys(i18n.data);
                         }
@@ -274,7 +304,7 @@ module.exports = function() {
              */
             get: function get(lang) {
                 var currentLang = i18n.data[lang || i18n.current] || {},
-                    common = {}, currentStateTranslations = {};
+                    common = {};
 
                 if(!currentLang[i18n.currentState]) {
 
@@ -284,17 +314,25 @@ module.exports = function() {
                     currentLang[i18n.currentState] = {};
                 }
 
-                angular.extend(common, {}, currentLang['_common']);
-                return angular.extend(common, currentLang[i18n.currentState]);;
+                angular.extend(common, {}, currentLang._common);
+                return angular.extend(common, currentLang[i18n.currentState]);
             },
 
             /**
-             * Get all traductions available for a lang
+             * Get all translations available for a lang
              * @param  {String} lang
              * @return {Object}
              */
             all: function all(lang) {
                 return i18n.data[lang || i18n.current];
+            },
+
+            /**
+             * Return each translations available for your app
+             * @return {Object}
+             */
+            translations: function translations() {
+              return i18n.data;
             },
 
             /**
@@ -332,6 +370,26 @@ module.exports = function() {
              */
             available: function available(){
                 return i18n.available;
+            },
+
+            /**
+             * Return the default event name in order to listen a new state||route
+             * @return {String}
+             */
+            getEvent: function getEvent() {
+              return config.eventName;
+            },
+
+            getConfig: function getConfig() {
+                return config;
+            },
+
+            /**
+             * Check if we use a namespace or not
+             * @return {Boolean}
+             */
+            hasNamespace: function hasNamespace() {
+                return !!config.namespace;
             }
         };
 

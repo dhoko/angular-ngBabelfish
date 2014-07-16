@@ -6,7 +6,7 @@ Internationalization module for angular.js, it's magic !
 
 ## Install
 
-`npm install ngBabelfish` or `bower install ngBabelfish`
+`npm install ng-babelfish` or `bower install ngBabelfish`
 
 In your html:
 
