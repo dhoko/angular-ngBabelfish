@@ -4,6 +4,8 @@
  */
 module.exports = ['babelfish', function(babelfish) {
 
+    "use strict";
+
     return {
         restrict: "A",
         link: function(scope,el,attr) {
@@ -13,6 +15,6 @@ module.exports = ['babelfish', function(babelfish) {
                 });
             });
         }
-    }
+    };
 
 }];

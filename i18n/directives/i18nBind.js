@@ -4,11 +4,17 @@
  */
 module.exports = ['babelfish', function (babelfish) {
 
+    "use strict";
+
     return {
         restrict: "A",
         link: function(scope,el,attr) {
-            el.append(babelfish.get(attr.i18nBindLang || babelfish.current() )[attr.i18nBind]);
+            el.on('click',function() {
+                scope.$apply(function() {
+                    babelfish.updateLang(attr.i18nLoad);
+                });
+            });
         }
-    }
+    };
 
 }];
