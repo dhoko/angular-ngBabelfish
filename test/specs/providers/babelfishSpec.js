@@ -291,7 +291,7 @@ describe('Lazy mode for translations', function() {
     }));
 
     it('should only load  the en-EN lang', inject(function (babelfish) {
-        expect(babelfish.available().length).toEqual(1);
+        expect(Object.keys(babelfish.translations()).length).toEqual(1);
     }));
 
     it('should load the home translations for en-EN', inject(function (babelfish) {
