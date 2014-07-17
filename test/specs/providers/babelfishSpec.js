@@ -319,24 +319,34 @@ describe('Lazy mode for translations', function() {
 
     describe('switch to another langage', function() {
 
-        beforeEach(inject(function ($injector) {
-            $httpBackend = $injector.get("$httpBackend");
-            $httpBackend.when("GET", urlI18nFr)
-              .respond(200, frAnswer);
-        }));
-
         beforeEach(function() {
-            $httpBackend.expectGET(urlI18nFr);
-        });
 
-        afterEach(function () {
-            $httpBackend.verifyNoOutstandingExpectation();
-        });
+            inject(function ($injector) {
+                $httpBackend = $injector.get("$httpBackend");
+                $httpBackend.when("GET", urlI18nFr)
+                  .respond(200, frAnswer);
+                spyOn(scope,'$emit');
+            });
 
-        it('should switch to french translations', inject(function (babelfish) {
             babelfish.updateLang('fr-FR');
+            $httpBackend.expectGET(urlI18nFr);
+            $httpBackend.flush();
+        });
+
+        it('should switch to french translations', function () {
             expect(document.documentElement.lang).toBe('fr');
             expect(babelfish.current()).toBe('fr-FR');
-        }));
+        });
+
+        it('should update the scope', function() {
+            expect(scope.i18n.home).toBe('Maison');
+        });
+
+        it('should trigger the changed event', function () {
+            expect(scope.$emit).toHaveBeenCalledWith('ngBabelfish.translation:changed', {
+                previous: 'en-EN',
+                value: 'fr-FR'
+            });
+        });
     });
 });

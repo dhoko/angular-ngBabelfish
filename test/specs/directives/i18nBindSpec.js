@@ -78,25 +78,9 @@ describe('ngBabelfish - i18n bind directive', function () {
             scope.$digest();
         }));
 
-        it('should append the translation', function() {
+        it('should append the translation', function () {
             scope.$emit('ngBabelfish.translation:loaded');
-
-            var test = false;
-            runs(function() {
-
-                setTimeout(function() {
-                    test = true;
-
-                },100);
-            });
-
-            waitsFor(function() {
-                return test;
-            },'Test have to be true',100);
-            var attr = {}
-            runs(function() {
-                expect(el.text()).toBe('Home');
-            });
+            expect(el.text()).toBe('Home');
         });
     });
 
@@ -114,24 +98,7 @@ describe('ngBabelfish - i18n bind directive', function () {
 
         it('should append the translation of the custom language', function() {
             scope.$emit('ngBabelfish.translation:loaded');
-
-            var test = false;
-            runs(function() {
-
-                setTimeout(function() {
-                    test = true;
-
-                },100);
-            });
-
-            waitsFor(function() {
-                return test;
-            },'Test have to be true',100);
-            var attr = {}
-            runs(function() {
-                expect(el.text()).toBe('Maison');
-            });
-
+            expect(el.text()).toBe('Maison');
         });
     });
 });
