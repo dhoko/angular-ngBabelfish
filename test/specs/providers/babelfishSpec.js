@@ -44,7 +44,7 @@ describe('ngBabelfish, please translate them all', function() {
     beforeEach(module('ui.router'));
 
     beforeEach(module('ngBabelfish', function (babelfishProvider) {
-        babelfishProvider.languages();
+        babelfishProvider.init();
     }));
 
     beforeEach(inject(function ($injector) {
@@ -183,7 +183,7 @@ describe('Loading a wrong file', function(){
     beforeEach(module('ui.router'));
 
     beforeEach(module('ngBabelfish', function (babelfishProvider) {
-        babelfishProvider.languages();
+        babelfishProvider.init();
     }));
 
     beforeEach(inject(function ($injector) {
@@ -214,7 +214,7 @@ describe('Add a namespace', function(){
     beforeEach(module('ui.router'));
 
     beforeEach(module('ngBabelfish', function (babelfishProvider) {
-        babelfishProvider.languages({
+        babelfishProvider.init({
             namespace: 'i18n'
         });
     }));
@@ -253,20 +253,19 @@ describe('Lazy mode for translations', function() {
     beforeEach(module('ui.router'));
 
     beforeEach(module('ngBabelfish', function (babelfishProvider) {
-        babelfishProvider.languages({
-            namespace: 'i18n',
-            lazy: true,
-            urls: [
-                {
-                    lang: "fr-FR",
-                    url: urlI18nFr
-                },
-                {
-                    lang: "en-EN",
-                    url: urlI18nEn
-                }
-            ]
+        babelfishProvider.init({
+            namespace: 'i18n'
         });
+
+        babelfishProvider
+            .lang({
+                lang: "fr-FR",
+                url: urlI18nFr
+            })
+            .lang({
+                lang: "en-EN",
+                url: urlI18nEn
+            })
     }));
 
     beforeEach(inject(function ($injector) {

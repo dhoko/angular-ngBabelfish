@@ -4,6 +4,7 @@
  */
 module.exports = angular.module('ngBabelfish', [])
     .provider('babelfish', require('./providers/babelfish'))
+    .factory('translator', require('./factory/translator'))
     .directive('i18nLoad', require('./directives/i18nLoad'))
     .directive('i18nBind', require('./directives/i18nBind'))
     .filter('translate', require('./filters/translate'))
