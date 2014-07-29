@@ -354,9 +354,17 @@ module.exports = ['babelfish', function (babelfish) {
  * I18n module
  * Translate your application
  */
-module.exports = angular.module('ngBabelfish', [])
+module.exports = angular.module('ngBabelfish.solo', [])
+    .factory('translator', require('./factory/translator'));
+},{"./factory/translator":3}],6:[function(require,module,exports){
+require('./i18n-solo');
+
+/**
+ * I18n module
+ * Translate your application
+ */
+module.exports = angular.module('ngBabelfish', ['ngBabelfish.solo'])
     .provider('babelfish', require('./providers/babelfish'))
-    .factory('translator', require('./factory/translator'))
     .directive('i18nLoad', require('./directives/i18nLoad'))
     .directive('i18nBind', require('./directives/i18nBind'))
     .filter('translate', require('./filters/translate'))
@@ -368,7 +376,7 @@ module.exports = angular.module('ngBabelfish', [])
         });
         babelfish.load();
     }]);
-},{"./directives/i18nBind":1,"./directives/i18nLoad":2,"./factory/translator":3,"./filters/translate":4,"./providers/babelfish":6}],6:[function(require,module,exports){
+},{"./directives/i18nBind":1,"./directives/i18nLoad":2,"./filters/translate":4,"./i18n-solo":5,"./providers/babelfish":7}],7:[function(require,module,exports){
 /**
  * I18n Service Provider
  * Load your translations and update $rootScope
@@ -441,4 +449,4 @@ module.exports = function() {
         return Object.create(translator);
     }];
 };
-},{}]},{},[5])
+},{}]},{},[6])
