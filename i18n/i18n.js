@@ -14,6 +14,5 @@ module.exports = angular.module('ngBabelfish', [])
         $rootScope.$on(babelfish.getEvent(), function(e, toState) {
             babelfish.updateState(toState.name);
         });
-
         babelfish.load();
     }]);

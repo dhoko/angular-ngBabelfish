@@ -180,6 +180,7 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
             if(i18n.data[i18n.current]) {
                 return;
             }
+
             return $http.get(url)
                 .error(function() {
                     alert("Cannot load i18n translation file");

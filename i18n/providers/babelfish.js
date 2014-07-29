@@ -67,6 +67,6 @@ module.exports = function() {
      */
     this.$get = ['translator', function (translator) {
         translator.init(config);
-        return translator;
+        return Object.create(translator);
     }];
 };
