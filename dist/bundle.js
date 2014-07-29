@@ -409,7 +409,7 @@ module.exports = function() {
      */
     this.languages = function languagesConfig(params) {
         angular.extend(config, params);
-        console.warn('[ngBabelfish-babelfishProvider@babelfish] Deprecated call, you should use babelfishProvider.init(). Will be removed in 2.0');
+        console.warn('[ngBabelfish-babelfishProvider@languages] Deprecated call, you should use babelfishProvider.init(). Will be removed in 2.0');
     };
 
     /**
