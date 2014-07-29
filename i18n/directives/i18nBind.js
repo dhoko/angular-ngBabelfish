@@ -37,7 +37,6 @@ module.exports = ['translator', function (translator) {
                             el.text(translator.get(attr.i18nBindLang || translator.current())[key]);
                         });
                 }else{
-                    console.log(translator.get(attr.i18nBindLang || translator.current())[key])
                     el.text(translator.get(attr.i18nBindLang || translator.current())[key]);
                 }
 

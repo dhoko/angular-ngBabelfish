@@ -38,7 +38,6 @@ module.exports = ['translator', function (translator) {
                             el.text(translator.get(attr.i18nBindLang || translator.current())[key]);
                         });
                 }else{
-                    console.log(translator.get(attr.i18nBindLang || translator.current())[key])
                     el.text(translator.get(attr.i18nBindLang || translator.current())[key]);
                 }
 
@@ -244,7 +243,11 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
 
     // Listen when you change the language in your application
     $rootScope.$on('ngBabelfish.translation:changed', function() {
-        setTranslation(i18n.currentState);
+        if(!config.isSolo) {
+            setTranslation(i18n.currentState);
+        }else{
+            setSoloTranslation();
+        }
     });
 
     var service = {
