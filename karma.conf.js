@@ -17,8 +17,8 @@ module.exports = function(config) {
     exclude: [],
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
     // reporters: ['tap'],
-    reporters: ['progress'],
-    // reporters: ['mocha'],
+    // reporters: ['progress'],
+    reporters: ['mocha'],
 
     port: 9876,
     runnerPort: 9100,
@@ -30,7 +30,7 @@ module.exports = function(config) {
     browsers: ['PhantomJS'],
     captureTimeout: 60000,
 
-    singleRun: !true,
+    singleRun: true,
     // browserify: {
     //   watch: true,
     // },
