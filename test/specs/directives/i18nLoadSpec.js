@@ -1,12 +1,12 @@
 describe('Directive@i18nLoad: Load a translation', function () {
     'use strict';
-    var babelfish,el,compile,rootScope,scope;
+    var translator,el,compile,rootScope,scope;
 
     beforeEach(module('ui.router'));
     beforeEach(function() {
-        module('ngBabelfish', function ($provide) {
+        module('ngBabelfish.solo', function ($provide) {
 
-            $provide.decorator('babelfish', function ($delegate) {
+            $provide.decorator('translator', function ($delegate) {
 
                 $delegate.load = function(lang) {};
                 return $delegate;
@@ -14,9 +14,9 @@ describe('Directive@i18nLoad: Load a translation', function () {
 
         });
 
-        inject(function (_babelfish_) {
-            babelfish = _babelfish_;
-            spyOn(babelfish,'updateLang');
+        inject(function (_translator_) {
+            translator = _translator_;
+            spyOn(translator,'updateLang');
         })
     })
 
@@ -49,7 +49,7 @@ describe('Directive@i18nLoad: Load a translation', function () {
             }
 
             click(el[0]);
-            expect(babelfish.updateLang).toHaveBeenCalledWith('fr-FR');
+            expect(translator.updateLang).toHaveBeenCalledWith('fr-FR');
         });
     });
 });
