@@ -31,7 +31,7 @@ var frAnswer = {
       "en-EN": enAnswer
     }
 
-describe('ngBabelfish - i18n bind directive', function () {
+describe('Directive@i18nBind: append a translation', function () {
     'use strict';
     var babelfish,el,compile,rootScope,scope;
 
@@ -45,6 +45,7 @@ describe('ngBabelfish - i18n bind directive', function () {
 
                 $delegate.load = function(lang) {
                 };
+
                 $delegate.get = function(lang) {
 
                     lang = lang || 'en-EN';
@@ -65,39 +66,41 @@ describe('ngBabelfish - i18n bind directive', function () {
         inject(function (_babelfish_, $rootScope) {
             babelfish = _babelfish_;
             rootScope = $rootScope;
+
+            babelfish.setData(answer);
         });
 
     });
 
     describe('Work with the default configuration', function() {
         beforeEach(inject(function ($injector) {
-            el = angular.element('<h1 data-i18n-bind="home"></h1>');
+            el = angular.element('<h1 data-i18n-bind="i18n.home"></h1>');
             compile = $injector.get('$compile');
             scope = rootScope.$new();
+            scope.i18n = babelfish.get();
             compile(el)(scope);
             scope.$digest();
         }));
 
         it('should append the translation', function () {
-            scope.$emit('ngBabelfish.translation:loaded');
             expect(el.text()).toBe('Home');
         });
     });
 
     describe('Work with another language', function() {
+
         beforeEach(inject(function ($injector) {
             el = angular.element('<h1 data-i18n-bind="home" data-i18n-bind-lang="fr-FR"></h1>');
             compile = $injector.get('$compile');
             rootScope = $injector.get('$rootScope');
 
             scope = rootScope.$new();
-
+            scope.i18n = babelfish.get();
             compile(el)(scope);
             scope.$digest();
         }));
 
         it('should append the translation of the custom language', function() {
-            scope.$emit('ngBabelfish.translation:loaded');
             expect(el.text()).toBe('Maison');
         });
     });

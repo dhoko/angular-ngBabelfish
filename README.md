@@ -143,11 +143,11 @@ So when the file is created, it binds the data from the default state (*home*) t
 ### Configuration
 
 ```JavaScript
-angular.module('myApp')
+angular.module('myApp',['ui.router','ngBabelfish'])
     .config(function(babelfishProvider) {
 
         // Configure the i18n for this app
-        babelfishProvider.languages({
+        babelfishProvider.init({
             state: "home", // Default state to load
             lang: "en-EN", // Default language
             url: "/i18n/languages.json", // Default url
@@ -219,11 +219,11 @@ You can build a file per lang, so you can load only the current lang, and load a
 Configure the service from `babelfishProvider` in your app module
 
 ```JavaScript
-angular.module('myApp')
+angular.module('myApp',['ui.router','ngBabelfish'])
     .config(function(babelfishProvider) {
 
         // Configure the i18n for this app
-        babelfishProvider.languages({
+        babelfishProvider.init({
             namespace: "", // Namespace to store your translations in the $scope
             state: "home", // Default state of your app
             lang: "fr-FR", // Default lang for the app
@@ -239,7 +239,33 @@ angular.module('myApp')
             ]
         });
 
-    })
+    });
+
+// Other way to do it
+
+angular.module('myApp',['ui.router','ngBabelfish'])
+    .config(function(babelfishProvider) {
+
+        // Configure the i18n for this app
+        babelfishProvider.init({
+            namespace: "", // Namespace to store your translations in the $scope
+            state: "home", // Default state of your app
+            lang: "fr-FR" // Default lang for the app
+        });
+
+        // no need to activate lazy mode, it's already activated throw lang()
+        babelfishProvider
+            .lang({
+                lang: "fr-FR", // Name of your translation
+                url: "/i18n/fr-FR.json" // Path to the translation
+            })
+            .lang({
+                lang: "en-EN",
+                url: "/i18n/en-EN.json"
+            });
+
+
+    });
 ```
 
 It's ready.
@@ -272,6 +298,28 @@ It's ready.
   }
 ```
 
+## Solo Mode (translate only a small portion of an application, such as a directive)
+
+You can update a small portion of an application, without using ngBabelfish for the whole application. So it can be used with another translate service if you want.
+
+```JavaScript
+angular.module('myApp',['ui.router','ngBabelfish.solo'])
+    .controller('testController', function(translator) {
+        translator.initSolo({
+            namespace: 'i18n'
+        });
+        translator.load();
+    });
+```
+
+> To use the solo mode you must inject `ngBabelfish.solo` module (ngBabelfish already inject ngBabelfish.solo). You need to load the service `translator`.
+
+Then it's ready, your translations are available in `$scope.i18n`;
+
+*You cannot load the service babelfish with the solo mode cf [changelog Solo Mode](https://github.com/dhoko/ngBabelfish/pull/29)*
+
+
+
 ## API
 
 ### In a template
@@ -295,6 +343,10 @@ API:
 - `babelfish.updateLang(lang)` : Load new translation for a lang in your app
 - `babelfish.updateState(state)` : Bind current translation for a state
 - `babelfish.isLoaded()` : Detect if your i18n is loaded
+- `babelfish.loadTranslation(lang,url)` : Load a new translation at runtime
+- `babelfish.isLangLoaded(lang)` : Check if a language is loaded
+- `babelfish.getNamespace()`: Get the namespace
+- `babelfish.translations()`: Get all the transltions for the application
 
 ### Filter translate
 
