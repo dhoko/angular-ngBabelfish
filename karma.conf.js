@@ -16,7 +16,7 @@ module.exports = function(config) {
 
     exclude: [],
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-    reporters: ['progress','coverage'],
+    reporters: ['mocha'],
 
     port: 9876,
     runnerPort: 9100,

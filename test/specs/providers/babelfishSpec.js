@@ -37,7 +37,7 @@ var urlI18n = "/i18n/languages.json",
       "en-EN": enAnswer
     };
 
-describe('ngBabelfish, please translate them all', function() {
+describe('Provider@babelfish:  please translate them all', function() {
 
     var scope, babelfish;
 
@@ -178,7 +178,7 @@ describe('ngBabelfish, please translate them all', function() {
     });
 });
 
-describe('Loading a wrong file', function(){
+describe('Provider@babelfish: Loading a wrong file', function(){
 
     beforeEach(module('ui.router'));
 
@@ -207,7 +207,7 @@ describe('Loading a wrong file', function(){
     });
 });
 
-describe('Add a namespace', function(){
+describe('Provider@babelfish: Add a namespace', function(){
 
     var scope;
 
@@ -246,7 +246,7 @@ describe('Add a namespace', function(){
     }));
 });
 
-describe('Lazy mode for translations', function() {
+describe('Provider@babelfish: Lazy mode for translations', function() {
 
     var babelfish;
 

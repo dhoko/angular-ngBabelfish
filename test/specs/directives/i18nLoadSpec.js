@@ -1,4 +1,4 @@
-describe('ngBabelfish - i18n bind directive', function () {
+describe('Directive@i18nLoad: Load a translation', function () {
     'use strict';
     var babelfish,el,compile,rootScope,scope;
 

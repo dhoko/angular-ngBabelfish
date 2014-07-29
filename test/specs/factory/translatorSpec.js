@@ -56,7 +56,7 @@ var config = {
     log: true
 }
 
-describe('Translator, Sir can you translate this application ?', function() {
+describe('Factory@translator: Sir can you translate this application ?', function() {
 
     var scope, translator;
 
@@ -201,7 +201,7 @@ describe('Translator, Sir can you translate this application ?', function() {
     });
 });
 
-describe('Loading a wrong file', function(){
+describe('Factory@translator: Loading a wrong file', function(){
 
     var translator;
 
@@ -239,7 +239,7 @@ describe('Loading a wrong file', function(){
     });
 });
 
-describe('Add a namespace', function(){
+describe('Factory@translator: Add a namespace', function(){
 
     var scope, translator;
 

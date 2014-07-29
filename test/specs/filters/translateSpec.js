@@ -1,4 +1,4 @@
-describe('The test filter', function () {
+describe('Filter@translate: Translate a string', function () {
     'use strict';
 
     var $filter;
