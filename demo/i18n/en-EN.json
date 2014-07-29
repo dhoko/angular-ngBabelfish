@@ -1,6 +1,7 @@
 {
   "_common": {
-      "version": "1.4.2"
+      "version": "1.6.0",
+      "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Numquam doloremque, ipsa neque eaque saepe error amet pariatur aperiam vitae eius iure sapiente rem minima autem possimus facilis similique voluptatem laboriosam."
   },
   "home": {
       "title": "ngBabelfish demonstration",

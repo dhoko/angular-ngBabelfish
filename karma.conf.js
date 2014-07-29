@@ -28,7 +28,7 @@ module.exports = function(config) {
     browsers: ['PhantomJS'],
     captureTimeout: 60000,
 
-    singleRun: true,
+    singleRun: !true,
     // browserify: {
     //   watch: true,
     // },

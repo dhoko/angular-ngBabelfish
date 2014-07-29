@@ -10,9 +10,9 @@ module.exports = ['babelfish', function (babelfish) {
     return {
         restrict: "A",
         link: function(scope,el,attr) {
-
+          el.text(babelfish.get(attr.i18nBindLang || babelfish.current() )[attr.i18nBind]);
           scope.$on('ngBabelfish.translation:loaded', function() {
-            el.html(babelfish.get(attr.i18nBindLang || babelfish.current() )[attr.i18nBind]);
+            el.text(babelfish.get(attr.i18nBindLang || babelfish.current() )[attr.i18nBind]);
           });
         }
     };
@@ -81,6 +81,41 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
         }
 
         i18n.data[i18n.current] = data;
+    }
+
+    /**
+     * Load a translation to the $scope
+     * - doc BCP 47 {@link http://tools.ietf.org/html/bcp47}
+     * - doc Value of HTML5 lang attr {@link http://webmasters.stackexchange.com/questions/28307/value-of-the-html5-lang-attribute}
+     * @param {String} lang Your language cf BCP 47
+     */
+    function setSoloTranslation() {
+
+        // Prevent too many digest
+        if(i18n.current === i18n.previousLang) {
+          return;
+        }
+
+        i18n.active = true;
+
+        var lang = i18n.current;
+        var common = {}, currentPageTranslation = {};
+
+        if(i18n.data[lang]) {
+
+            angular.extend(common, i18n.data._common || {});
+            currentPageTranslation = angular.extend(common, i18n.data[lang]);
+
+            if(config.namespace) {
+                $rootScope[config.namespace] = currentPageTranslation;
+            }else {
+                angular.extend($rootScope, currentPageTranslation);
+            }
+
+            $rootScope.$emit('ngBabelfish.translation:loaded', {
+                lang: lang
+            });
+        }
     }
 
     /**
@@ -205,6 +240,15 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
         },
 
         /**
+         * Load the module to be in solo mode without translations per state
+         * @param  {Object} customConfig
+         */
+        initSolo: function initSolo(customConfig) {
+            config = customConfig;
+            config.isSolo = true;
+        },
+
+        /**
          * Load a translation file
          * @param  {String} url  URL for the current translation
          * @param  {String} name State's name
@@ -243,7 +287,12 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
                     }
                 })
                 .then(function() {
-                    setTranslation(i18n.currentState);
+
+                    if(!config.isSolo) {
+                        setTranslation(i18n.currentState);
+                    }else{
+                        setSoloTranslation();
+                    }
                 });
         },
 
@@ -255,6 +304,12 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
         get: function get(lang) {
             var currentLang = i18n.data[lang || i18n.current] || {},
                 common = {};
+
+
+            if(config.isSolo) {
+                return angular.extend({}, i18n.data._common || {}, currentLang);
+            }
+
 
             if(!currentLang[i18n.currentState]) {
 
@@ -274,6 +329,11 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
          * @return {Object}
          */
         all: function all(lang) {
+
+            if(config.isSolo) {
+                return angular.extend({}, i18n.data._common || {}, i18n.data[lang || i18n.current] || {});
+            }
+
             return i18n.data[lang || i18n.current];
         },
 
