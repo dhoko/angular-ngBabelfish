@@ -340,7 +340,7 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
          * @param {String} lang Lang to load
          * @param  {String} url  URL for the current translation
          */
-        loadTranslation: function(lang, url) {
+        loadTranslation: function loadTranslation(lang, url) {
 
             url = url || loadLazyDefaultUrl(lang);
 
