@@ -8,7 +8,7 @@
  *
  * Isolate scope FTW
  */
-module.exports = ['babelfish', function (babelfish) {
+module.exports = ['translator', function (translator) {
 
     'use strict';
 
@@ -24,21 +24,22 @@ module.exports = ['babelfish', function (babelfish) {
         link: function(scope,el,attr) {
 
             var key = '',
-                namespace = babelfish.getNamespace();
+                namespace = translator.getNamespace();
 
             key = (namespace) ? attr.i18nBind.replace(namespace + '.', '') : attr.i18nBind;
 
             // Because it breaks if you update translationKey...
             if(attr.i18nBindLang) {
 
-                // if(!babelfish.isLangLoaded(attr.i18nBindLang)) {
-                //     babelfish.loadTranslation('fr-FR')
-                //         .then(function() {
-                //             el.text(babelfish.get(attr.i18nBindLang || babelfish.current())[key]);
-                //         });
-                // }else{
-                    el.text(babelfish.get(attr.i18nBindLang || babelfish.current())[key]);
-                // }
+                if(!translator.isLangLoaded(attr.i18nBindLang)) {
+                    translator.loadTranslation(attr.i18nBindLang)
+                        .then(function() {
+                            el.text(translator.get(attr.i18nBindLang || translator.current())[key]);
+                        });
+                }else{
+                    console.log(translator.get(attr.i18nBindLang || translator.current())[key])
+                    el.text(translator.get(attr.i18nBindLang || translator.current())[key]);
+                }
 
             }
 

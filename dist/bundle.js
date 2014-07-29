@@ -9,7 +9,7 @@
  *
  * Isolate scope FTW
  */
-module.exports = ['babelfish', function (babelfish) {
+module.exports = ['translator', function (translator) {
 
     'use strict';
 
@@ -25,21 +25,22 @@ module.exports = ['babelfish', function (babelfish) {
         link: function(scope,el,attr) {
 
             var key = '',
-                namespace = babelfish.getNamespace();
+                namespace = translator.getNamespace();
 
             key = (namespace) ? attr.i18nBind.replace(namespace + '.', '') : attr.i18nBind;
 
             // Because it breaks if you update translationKey...
             if(attr.i18nBindLang) {
 
-                // if(!babelfish.isLangLoaded(attr.i18nBindLang)) {
-                //     babelfish.loadTranslation('fr-FR')
-                //         .then(function() {
-                //             el.text(babelfish.get(attr.i18nBindLang || babelfish.current())[key]);
-                //         });
-                // }else{
-                    el.text(babelfish.get(attr.i18nBindLang || babelfish.current())[key]);
-                // }
+                if(!translator.isLangLoaded(attr.i18nBindLang)) {
+                    translator.loadTranslation(attr.i18nBindLang)
+                        .then(function() {
+                            el.text(translator.get(attr.i18nBindLang || translator.current())[key]);
+                        });
+                }else{
+                    console.log(translator.get(attr.i18nBindLang || translator.current())[key])
+                    el.text(translator.get(attr.i18nBindLang || translator.current())[key]);
+                }
 
             }
 
@@ -53,7 +54,7 @@ module.exports = ['babelfish', function (babelfish) {
  * i18nLoad directive
  * Load a translation from a click on a button with the attr i18n-load
  */
-module.exports = ['babelfish', function (babelfish) {
+module.exports = ['translator', function (translator) {
 
     "use strict";
 
@@ -62,7 +63,7 @@ module.exports = ['babelfish', function (babelfish) {
         link: function(scope,el,attr) {
             el.on('click',function() {
                 scope.$apply(function() {
-                    babelfish.updateLang(attr.i18nLoad);
+                    translator.updateLang(attr.i18nLoad);
                 });
             });
         }
@@ -248,6 +249,10 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
 
     var service = {
 
+        setData: function setData(data) {
+            i18n.data = data;
+        },
+
         /**
          * Configure this factory
          *
@@ -327,6 +332,11 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
                 });
         },
 
+        /**
+         * Load a new translation
+         * @param {String} lang Lang to load
+         * @param  {String} url  URL for the current translation
+         */
         loadTranslation: function(lang, url) {
 
             url = url || loadLazyDefaultUrl(lang);
@@ -487,8 +497,11 @@ module.exports = ['babelfish', function (babelfish) {
  * Translate your application
  */
 module.exports = angular.module('ngBabelfish.solo', [])
-    .factory('translator', require('./factory/translator'));
-},{"./factory/translator":3}],6:[function(require,module,exports){
+    .factory('translator', require('./factory/translator'))
+    .directive('i18nLoad', require('./directives/i18nLoad'))
+    .directive('i18nBind', require('./directives/i18nBind'));
+
+},{"./directives/i18nBind":1,"./directives/i18nLoad":2,"./factory/translator":3}],6:[function(require,module,exports){
 require('./i18n-solo');
 
 /**
@@ -497,8 +510,6 @@ require('./i18n-solo');
  */
 module.exports = angular.module('ngBabelfish', ['ngBabelfish.solo'])
     .provider('babelfish', require('./providers/babelfish'))
-    .directive('i18nLoad', require('./directives/i18nLoad'))
-    .directive('i18nBind', require('./directives/i18nBind'))
     .filter('translate', require('./filters/translate'))
     .run(['babelfish', '$state','$rootScope', function(babelfish, $state, $rootScope) {
 
@@ -508,7 +519,7 @@ module.exports = angular.module('ngBabelfish', ['ngBabelfish.solo'])
         });
         babelfish.load();
     }]);
-},{"./directives/i18nBind":1,"./directives/i18nLoad":2,"./filters/translate":4,"./i18n-solo":5,"./providers/babelfish":7}],7:[function(require,module,exports){
+},{"./filters/translate":4,"./i18n-solo":5,"./providers/babelfish":7}],7:[function(require,module,exports){
 /**
  * I18n Service Provider
  * Load your translations and update $rootScope

@@ -6,8 +6,6 @@ require('./i18n-solo');
  */
 module.exports = angular.module('ngBabelfish', ['ngBabelfish.solo'])
     .provider('babelfish', require('./providers/babelfish'))
-    .directive('i18nLoad', require('./directives/i18nLoad'))
-    .directive('i18nBind', require('./directives/i18nBind'))
     .filter('translate', require('./filters/translate'))
     .run(['babelfish', '$state','$rootScope', function(babelfish, $state, $rootScope) {
 

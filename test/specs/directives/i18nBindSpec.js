@@ -45,6 +45,7 @@ describe('Directive@i18nBind: append a translation', function () {
 
                 $delegate.load = function(lang) {
                 };
+
                 $delegate.get = function(lang) {
 
                     lang = lang || 'en-EN';
@@ -65,6 +66,8 @@ describe('Directive@i18nBind: append a translation', function () {
         inject(function (_babelfish_, $rootScope) {
             babelfish = _babelfish_;
             rootScope = $rootScope;
+
+            babelfish.setData(answer);
         });
 
     });

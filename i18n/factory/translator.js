@@ -176,6 +176,10 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
 
     var service = {
 
+        setData: function setData(data) {
+            i18n.data = data;
+        },
+
         /**
          * Configure this factory
          *
@@ -255,6 +259,11 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
                 });
         },
 
+        /**
+         * Load a new translation
+         * @param {String} lang Lang to load
+         * @param  {String} url  URL for the current translation
+         */
         loadTranslation: function(lang, url) {
 
             url = url || loadLazyDefaultUrl(lang);
