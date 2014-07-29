@@ -71,33 +71,33 @@ describe('Directive@i18nBind: append a translation', function () {
 
     describe('Work with the default configuration', function() {
         beforeEach(inject(function ($injector) {
-            el = angular.element('<h1 data-i18n-bind="home"></h1>');
+            el = angular.element('<h1 data-i18n-bind="i18n.home"></h1>');
             compile = $injector.get('$compile');
             scope = rootScope.$new();
+            scope.i18n = babelfish.get();
             compile(el)(scope);
             scope.$digest();
         }));
 
         it('should append the translation', function () {
-            scope.$emit('ngBabelfish.translation:loaded');
             expect(el.text()).toBe('Home');
         });
     });
 
     describe('Work with another language', function() {
+
         beforeEach(inject(function ($injector) {
             el = angular.element('<h1 data-i18n-bind="home" data-i18n-bind-lang="fr-FR"></h1>');
             compile = $injector.get('$compile');
             rootScope = $injector.get('$rootScope');
 
             scope = rootScope.$new();
-
+            scope.i18n = babelfish.get();
             compile(el)(scope);
             scope.$digest();
         }));
 
         it('should append the translation of the custom language', function() {
-            scope.$emit('ngBabelfish.translation:loaded');
             expect(el.text()).toBe('Maison');
         });
     });

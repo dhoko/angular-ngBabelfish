@@ -9,7 +9,8 @@ angular.module('ngBabelfishDemo', ['ui.router','ngBabelfish'])
     $stateProvider
       .state('home', {
         url: '/',
-        templateUrl: 'partials/home.html'
+        templateUrl: 'partials/home.html',
+        controller: function() {}
       })
 
       .state('config', {
@@ -22,7 +23,7 @@ angular.module('ngBabelfishDemo', ['ui.router','ngBabelfish'])
 
       $urlRouterProvider.otherwise('/');
 
-      babelfishProvider.languages({
+      babelfishProvider.init({
         namespace: 'i18n',
         url: 'i18n/i18n.json'
       })

@@ -22,7 +22,7 @@ angular.module('ngBabelfishDemoLazy', ['ui.router','ngBabelfish'])
 
       $urlRouterProvider.otherwise('/');
 
-      babelfishProvider.languages({
+      babelfishProvider.init({
         namespace: 'i18n',
         lazy: true,
         urls: [

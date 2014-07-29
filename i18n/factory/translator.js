@@ -15,12 +15,14 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
      * Load your url from lazy mode
      * @return {String} url
      */
-    function loadLazyDefaultUrl() {
+    function loadLazyDefaultUrl(customLang) {
 
         var url = config.url;
+        var matchLang = customLang || config.lang;
+
         if(config.lazy) {
             url = config.urls.filter(function (o) {
-                return o.lang === config.lang;
+                return o.lang === matchLang;
             })[0].url;
         }
         return url;
@@ -253,6 +255,30 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
                 });
         },
 
+        loadTranslation: function(lang, url) {
+
+            url = url || loadLazyDefaultUrl(lang);
+
+            if(!url) {
+                throw new Error('[ngBabelfish-translator@loadTranslation] You want to load ' + lang + ' but you do not set an url for this lang (as a second argument)');
+            }
+
+            return $http.get(url)
+                .error(function() {
+                    alert("Cannot load i18n translation file");
+                })
+                .success(function (data) {
+
+                    i18n.data[lang] = data;
+
+                    if(config.lazy) {
+                        i18n.available = config.urls.map(function (item) {return item.lang;});
+                    }else {
+                        i18n.available = Object.keys(i18n.data);
+                    }
+                });
+        },
+
         /**
          * Return the current state translation
          * @param  {String} lang
@@ -303,6 +329,15 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
         },
 
         /**
+         * Check if you already load this lang
+         * @param  {String}  lang
+         * @return {Boolean}
+         */
+        isLangLoaded: function isLangLoaded(lang) {
+            return !!i18n.data[lang];
+        },
+
+        /**
          * Get the current Language
          * @return {String} lang
          */
@@ -345,6 +380,14 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
          */
         getEvent: function getEvent() {
             return config.eventName;
+        },
+
+        /**
+         * Get the namespace of the application
+         * @return {String}
+         */
+        getNamespace: function getNamespace() {
+            return config.namespace;
         }
     };
 

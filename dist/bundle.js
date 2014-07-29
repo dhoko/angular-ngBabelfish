@@ -2,18 +2,47 @@
 /**
  * i18nBind directive
  * Load a translation for a var
+ *
+ * If you do not provide any lang (i18n-bind-lang), we will compile the directive, else it will update the textContent.
+ *
+ * We do not update the translationKey's value because it will change the reference key from i18n-bind. Yup that's weird.
+ *
+ * Isolate scope FTW
  */
 module.exports = ['babelfish', function (babelfish) {
 
     'use strict';
 
+
     return {
         restrict: "A",
+        scope: {
+            translationKey: "=i18nBind",
+            translationLang: "@i18nBindLang"
+        },
+        template: "{{translationKey}}",
+
         link: function(scope,el,attr) {
-          el.text(babelfish.get(attr.i18nBindLang || babelfish.current() )[attr.i18nBind]);
-          scope.$on('ngBabelfish.translation:loaded', function() {
-            el.text(babelfish.get(attr.i18nBindLang || babelfish.current() )[attr.i18nBind]);
-          });
+
+            var key = '',
+                namespace = babelfish.getNamespace();
+
+            key = (namespace) ? attr.i18nBind.replace(namespace + '.', '') : attr.i18nBind;
+
+            // Because it breaks if you update translationKey...
+            if(attr.i18nBindLang) {
+
+                // if(!babelfish.isLangLoaded(attr.i18nBindLang)) {
+                //     babelfish.loadTranslation('fr-FR')
+                //         .then(function() {
+                //             el.text(babelfish.get(attr.i18nBindLang || babelfish.current())[key]);
+                //         });
+                // }else{
+                    el.text(babelfish.get(attr.i18nBindLang || babelfish.current())[key]);
+                // }
+
+            }
+
         }
     };
 
@@ -58,12 +87,14 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
      * Load your url from lazy mode
      * @return {String} url
      */
-    function loadLazyDefaultUrl() {
+    function loadLazyDefaultUrl(customLang) {
 
         var url = config.url;
+        var matchLang = customLang || config.lang;
+
         if(config.lazy) {
             url = config.urls.filter(function (o) {
-                return o.lang === config.lang;
+                return o.lang === matchLang;
             })[0].url;
         }
         return url;
@@ -296,6 +327,30 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
                 });
         },
 
+        loadTranslation: function(lang, url) {
+
+            url = url || loadLazyDefaultUrl(lang);
+
+            if(!url) {
+                throw new Error('[ngBabelfish-translator@loadTranslation] You want to load ' + lang + ' but you do not set an url for this lang (as a second argument)');
+            }
+
+            return $http.get(url)
+                .error(function() {
+                    alert("Cannot load i18n translation file");
+                })
+                .success(function (data) {
+
+                    i18n.data[lang] = data;
+
+                    if(config.lazy) {
+                        i18n.available = config.urls.map(function (item) {return item.lang;});
+                    }else {
+                        i18n.available = Object.keys(i18n.data);
+                    }
+                });
+        },
+
         /**
          * Return the current state translation
          * @param  {String} lang
@@ -346,6 +401,15 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
         },
 
         /**
+         * Check if you already load this lang
+         * @param  {String}  lang
+         * @return {Boolean}
+         */
+        isLangLoaded: function isLangLoaded(lang) {
+            return !!i18n.data[lang];
+        },
+
+        /**
          * Get the current Language
          * @return {String} lang
          */
@@ -388,6 +452,14 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
          */
         getEvent: function getEvent() {
             return config.eventName;
+        },
+
+        /**
+         * Get the namespace of the application
+         * @return {String}
+         */
+        getNamespace: function getNamespace() {
+            return config.namespace;
         }
     };
 
