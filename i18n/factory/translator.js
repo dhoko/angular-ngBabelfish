@@ -251,6 +251,10 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
                         i18n.available = config.urls.map(function (item) {return item.lang;});
                     }else {
                         i18n.available = Object.keys(i18n.data);
+
+                        if(config.isSolo && i18n.available.indexOf('_comon') > -1) {
+                            i18n.available.splice(i18n.available.indexOf('_comon'),1);
+                        }
                     }
                 })
                 .then(function() {
