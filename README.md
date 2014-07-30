@@ -318,6 +318,25 @@ Then it's ready, your translations are available in `$scope.i18n`;
 
 *You cannot load the service babelfish with the solo mode cf [changelog Solo Mode](https://github.com/dhoko/ngBabelfish/pull/29)*
 
+### JSON for the solo mode
+
+```
+{
+    "_common": {
+        "version": "1.6.0"
+    },
+    "en-EN": {
+        "title": "Hello, welcome to this test",
+        "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Numquam doloremque, ipsa neque eaque saepe error amet pariatur aperiam vitae eius iure sapiente rem minima autem possimus facilis similique voluptatem laboriosam."
+    },
+    "fr-FR": {
+        "title": "Bonjour bienvenue sur ce test",
+        "text": "Masoirobal metatpulov euqilimis silicaf sumissop metua aminim mer etneipas erui suie eativ mairepa rutairap tema rorre epeas euqae euqen aspi ,euqmerolod mauqmuN .tile gnicisipida rutetcesnoc ,tema tis rolod muspi merol."
+    }
+}
+```
+
+Common is now a key shared for each language.
 
 
 ## API
