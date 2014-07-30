@@ -129,6 +129,10 @@ describe('Factory@translator: Sir can you translate this application ?', functio
         it('should have all translations', function () {
             expect(Object.keys(translator.available()).length).toEqual(2);
         });
+
+        it('should not have common key', function () {
+            expect(Object.keys(translator.available()).indexOf('_common')).toEqual(-1);
+        });
     });
 
     describe('When we change a state', function() {
