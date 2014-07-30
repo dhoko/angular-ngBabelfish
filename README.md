@@ -1,4 +1,4 @@
-# Angular ngBabelfish - [![Build Status](https://api.travis-ci.org/dhoko/ngBabelfish.png?branch=master)](https://travis-ci.org/dhoko/ngBabelfish)
+# Angular ngBabelfish - [![Build Status](https://api.travis-ci.org/dhoko/angular-ngBabelfish.svg)](https://travis-ci.org/dhoko/angular-ngBabelfish)
 
 Internationalization module for angular.js, it's magic !
 
