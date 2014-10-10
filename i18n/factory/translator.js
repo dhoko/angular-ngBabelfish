@@ -222,6 +222,13 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
          */
         load: function load(url, name) {
 
+            var lazyLang = false;
+            if(config.lazy) {
+                lazyLang = config.urls.filter(function (o) {
+                    return o.lang === config.lang;
+                })[0];
+            }
+
             url = url || loadLazyDefaultUrl();
 
             // Set the default lang for the html
@@ -231,40 +238,54 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
 
             var lang = config.lang || document.documentElement.lang + '-' + document.documentElement.lang.toUpperCase();
 
-            if(i18n.data[i18n.current]) {
-                return;
+            if(lazyLang && lazyLang.data) { //Lazy mode and data give directly
+                i18n.current = lang;
+                i18n.available = config.urls.map(function (item) {return item.lang;});
+
+                config.current = name;
+
+                buildI18n(lazyLang.data);
+                setTranslation(i18n.currentState);
+
+                return ;
             }
+            else {
 
-            return $http.get(url)
-                .error(function() {
-                    alert("Cannot load i18n translation file");
-                })
-                .success(function (data) {
+                if(i18n.data[i18n.current]) {
+                    return;
+                }
 
-                    if(config.lazy) {
-                        config.current = name;
-                    }
-                    i18n.current = lang;
-                    buildI18n(data);
+                return $http.get(url)
+                    .error(function() {
+                        alert("Cannot load i18n translation file");
+                    })
+                    .success(function (data) {
 
-                    if(config.lazy) {
-                        i18n.available = config.urls.map(function (item) {return item.lang;});
-                    }else {
-                        i18n.available = Object.keys(i18n.data);
-
-                        if(config.isSolo && i18n.available.indexOf('_comon') > -1) {
-                            i18n.available.splice(i18n.available.indexOf('_comon'),1);
+                        if(config.lazy) {
+                            config.current = name;
                         }
-                    }
-                })
-                .then(function() {
+                        i18n.current = lang;
+                        buildI18n(data);
 
-                    if(!config.isSolo) {
-                        setTranslation(i18n.currentState);
-                    }else{
-                        setSoloTranslation();
-                    }
-                });
+                        if(config.lazy) {
+                            i18n.available = config.urls.map(function (item) {return item.lang;});
+                        }else {
+                            i18n.available = Object.keys(i18n.data);
+
+                            if(config.isSolo && i18n.available.indexOf('_comon') > -1) {
+                                i18n.available.splice(i18n.available.indexOf('_comon'),1);
+                            }
+                        }
+                    })
+                    .then(function() {
+
+                        if(!config.isSolo) {
+                            setTranslation(i18n.currentState);
+                        }else{
+                            setSoloTranslation();
+                        }
+                    });
+            }
         },
 
         /**
