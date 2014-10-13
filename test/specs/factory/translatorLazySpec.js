@@ -140,10 +140,6 @@ describe('Factory@translator: Lazy mode for translations', function() {
         expect(Object.keys(translator.available()).length).toEqual(2);
     });
 
-    it('should load data directly when data key is set', function () {
-
-    });
-
     describe('switch to another langage', function() {
 
         beforeEach(function() {
