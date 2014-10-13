@@ -298,6 +298,41 @@ It's ready.
   }
 ```
 
+## Data Provider
+
+You can directly load your data by passing them in the data config attribute
+
+```JavaScript
+angular.module('myApp',['ui.router','ngBabelfish'])
+    .config(function(babelfishProvider) {
+
+        // Configure the i18n for this app
+        babelfishProvider.init({
+            state: "home", // Default state to load
+            lang: "en-EN", // Default language
+            data: {  //Your translation json goes here 
+              "_common" {
+                ...
+              },
+              "fr-FR": {
+                ...
+              },
+              "en-EN": {
+                ...
+              }
+            },
+            namespace: "", // Default namespace
+            lazy: false, // Active lazy
+            urls: [ // Files per lang when you are in lazy mode (so url is useless)
+                {
+                    lang: "", // fr-FR etc.
+                    data: {}// data also available in lazy mode
+                }
+            ]
+        });
+    });
+```
+
 ## Solo Mode (translate only a small portion of an application, such as a directive)
 
 You can update a small portion of an application, without using ngBabelfish for the whole application. So it can be used with another translate service if you want.
