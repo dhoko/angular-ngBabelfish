@@ -269,6 +269,8 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
                     }else{
                         setSoloTranslation();
                     }
+
+                    return ;
                 }
 
                 return $http.get(url)
