@@ -255,6 +255,22 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
                     return;
                 }
 
+                if(config.data) {
+                    i18n.current = lang;
+                    buildI18n(config.data);
+                    i18n.available = Object.keys(i18n.data);
+
+                    if(config.isSolo && i18n.available.indexOf('_comon') > -1) {
+                        i18n.available.splice(i18n.available.indexOf('_comon'),1);
+                    }
+
+                    if(!config.isSolo) {
+                        setTranslation(i18n.currentState);
+                    }else{
+                        setSoloTranslation();
+                    }
+                }
+
                 return $http.get(url)
                     .error(function() {
                         alert("Cannot load i18n translation file");
