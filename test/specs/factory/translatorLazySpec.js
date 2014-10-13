@@ -56,7 +56,7 @@ var config = {
     log: true
 };
 
-var configData = {
+var configDataLazy = {
     state: 'home',
     lang: 'en-EN',
     eventName: '$stateChangeSuccess',
@@ -196,7 +196,7 @@ describe("Factory@translator: Lazy mode with data provider", function() {
         $rootScope = _$rootScope_;
         scope = _$rootScope_.$new();
         translatorData = _translator_;
-        translatorData.init(configData);
+        translatorData.init(configDataLazy);
 
         document.documentElement.lang = '';
     }));

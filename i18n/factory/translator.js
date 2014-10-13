@@ -226,7 +226,7 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
             if(config.lazy) {
                 lazyLang = config.urls.filter(function (o) {
                     return o.lang === config.lang;
-                })[0];
+                })[0] || {};
             }
 
             url = url || loadLazyDefaultUrl();
@@ -255,7 +255,7 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
                     return;
                 }
 
-                if(config.data) {
+                if(config.data) { //data provider
                     i18n.current = lang;
                     buildI18n(config.data);
                     i18n.available = Object.keys(i18n.data);

@@ -298,7 +298,7 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
             if(config.lazy) {
                 lazyLang = config.urls.filter(function (o) {
                     return o.lang === config.lang;
-                })[0];
+                })[0] || {};
             }
 
             url = url || loadLazyDefaultUrl();
@@ -325,6 +325,24 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
 
                 if(i18n.data[i18n.current]) {
                     return;
+                }
+
+                if(config.data) { //data provider
+                    i18n.current = lang;
+                    buildI18n(config.data);
+                    i18n.available = Object.keys(i18n.data);
+
+                    if(config.isSolo && i18n.available.indexOf('_comon') > -1) {
+                        i18n.available.splice(i18n.available.indexOf('_comon'),1);
+                    }
+
+                    if(!config.isSolo) {
+                        setTranslation(i18n.currentState);
+                    }else{
+                        setSoloTranslation();
+                    }
+
+                    return ;
                 }
 
                 return $http.get(url)
