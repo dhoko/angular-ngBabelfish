@@ -54,7 +54,18 @@ var config = {
     }],
     current: "",
     log: true
-}
+};
+
+var configData = {
+    state: 'home',
+    lang: 'en-EN',
+    data: answer,
+    eventName: '$stateChangeSuccess',
+    namespace: "",
+    lazy: false,
+    current: "",
+    log: true
+};
 
 describe('Factory@translator: Sir can you translate this application ?', function() {
 
@@ -278,6 +289,175 @@ describe('Factory@translator: Add a namespace', function(){
         $httpBackend.verifyNoOutstandingRequest();
         $httpBackend.resetExpectations();
     });
+
+    it('should contains translations inside i18n key', inject(function (translator) {
+        expect(scope.i18n).toBeDefined();
+    }));
+
+    it('should have teh content from each page', inject(function (translator) {
+        expect(scope.i18n.welcome_cart).toBe("Welcome to ngBabelfish");
+    }));
+});
+
+describe('Factory@translator: Sir can you translate this application with data provider ?', function() {
+
+    var scope, translator;
+
+    beforeEach(module('ui.router'));
+    beforeEach(module('ngBabelfish', function (babelfishProvider) {
+        babelfishProvider = function() {
+            this.init = function() {},
+            this.$get = function() {}
+        }
+    }));
+
+    beforeEach(inject(function (_$rootScope_, _translator_) {
+        translator = _translator_;
+        translator.init(configData);
+        translator.load();
+        
+        scope = _$rootScope_;
+
+        document.documentElement.lang = '';
+    }));
+
+    describe('Populate translations', function() {
+
+        it('should be loaded', function () {
+            expect(translator.isLoaded()).toBe(true);
+        });
+
+        it('should have some translations available', function () {
+            expect(translator.all()).toBeDefined();
+        });
+
+        it('should have common translations', function () {
+            expect(translator.all()['_common']).toBeDefined();
+            expect(translator.all()['_common'].currency).toBe('$');
+        });
+
+        it('should have been Populate the scope', function() {
+            expect(scope.currency).toBeDefined();
+            expect(scope.currency).toBe('$');
+        });
+
+        it('should have en-EN translations', function () {
+            expect(translator.current()).toBe('en-EN');
+            expect(translator.get('en-EN')).toBeDefined();
+        });
+
+        it('should overide sharred keys with the current keys for a page', function () {
+            expect(translator.all()['_common'].welcome_cart).toBe('title');
+            expect(translator.get().welcome_cart).toBe('Welcome to ngBabelfish');
+            expect(scope.welcome_cart).toBeDefined('Welcome to ngBabelfish');
+        });
+
+        it('should switch to french translations', function () {
+            translator.updateLang('fr-FR');
+            expect(document.documentElement.lang).toBe('fr');
+            expect(translator.current()).toBe('fr-FR');
+        });
+
+        it('should have all translations', function () {
+            expect(Object.keys(translator.available()).length).toEqual(2);
+        });
+
+        it('should not have common key', function () {
+            expect(Object.keys(translator.available()).indexOf('_common')).toEqual(-1);
+        });
+    });
+
+    describe('When we change a state', function() {
+
+        it('should be defined for an unknown state', inject(function (translator) {
+
+            console.warn = function() {};
+
+            translator.updateState('test');
+
+            translator.updateState('test');
+            expect(translator.get()).toBeDefined();
+            expect(Object.keys(translator.get()).length).toBeGreaterThan(0);
+        }));
+
+        it('should contains our data for an known state', inject(function (translator) {
+            translator.updateState('home');
+            expect(translator.get().welcome_cart).toBeDefined('Welcome to ngBabelfish');
+            expect(Object.keys(translator.get()).length).toBeGreaterThan(0);
+        }));
+
+        it('should show a warning for an unknown state one change', inject(function (translator) {
+            console.warn = function(message,replace1, replace2) {
+                expect(replace1).toBe('test');
+            };
+
+            translator.updateState('test');
+
+        }));
+    });
+
+
+
+    describe('Are you listening to me ?', function() {
+
+        beforeEach(inject(function ($injector) {
+            scope = $injector.get('$rootScope');
+            spyOn(scope, '$emit');
+            document.documentElement.lang = '';
+        }));
+
+        it('should trigger en event when we change the lang', inject(function (translator) {
+
+            translator.updateLang('fr-FR');
+            expect(scope.$emit).toHaveBeenCalledWith('ngBabelfish.translation:changed', {
+                previous: 'en-EN',
+                value: 'fr-FR'
+            });
+        }));
+
+        it('should trigger en event when we change the lang and its not defined', inject(function (translator) {
+
+            translator.updateLang();
+            expect(scope.$emit).toHaveBeenCalledWith('ngBabelfish.translation:changed', {
+                previous: 'en-EN',
+                value: 'en-EN'
+            });
+        }));
+
+
+        it('should trigger en event when we load another language', inject(function (translator) {
+
+            translator.updateState('test');
+            expect(scope.$emit).toHaveBeenCalledWith('ngBabelfish.translation:loaded', {
+                currentState: 'test',
+                lang: 'en-EN'
+            });
+        }));
+
+    });
+});
+
+describe('Factory@translator: Add a namespace with data provider', function(){
+
+    var scope, translator;
+
+    beforeEach(module('ui.router'));
+    beforeEach(module('ngBabelfish', function (babelfishProvider) {
+        babelfishProvider = function() {
+            this.init = function() {},
+            this.$get = function() {}
+        }
+    }));
+
+    beforeEach(inject(function (_$rootScope_, _translator_) {
+        translator = _translator_;
+        translator.init(angular.extend({}, configData, {namespace: 'i18n'}));
+        translator.load();
+        
+        scope = _$rootScope_;
+
+        document.documentElement.lang = '';
+    }));
 
     it('should contains translations inside i18n key', inject(function (translator) {
         expect(scope.i18n).toBeDefined();

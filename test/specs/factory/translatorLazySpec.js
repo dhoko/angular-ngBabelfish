@@ -56,6 +56,24 @@ var config = {
     log: true
 };
 
+var configDataLazy = {
+    state: 'home',
+    lang: 'en-EN',
+    eventName: '$stateChangeSuccess',
+    namespace: "i18n",
+    lazy: true,
+    urls: [{
+        lang: "fr-FR",
+        data: frAnswer
+    },
+    {
+        lang: "en-EN",
+        data: enAnswer
+    }],
+    current: "",
+    log: true
+}
+
 describe('Factory@translator: Lazy mode for translations', function() {
 
     var translator,scope, $httpBackend, $rootScope;
@@ -77,6 +95,7 @@ describe('Factory@translator: Lazy mode for translations', function() {
         $httpBackend = _$httpBackend_;
         translator = _translator_;
         translator.init(angular.extend({}, config, {lazy: true, namespace: 'i18n', url: urlI18nEn}));
+
 
         $httpBackend.when("GET", urlI18nEn)
           .respond(200, enAnswer);
@@ -152,5 +171,85 @@ describe('Factory@translator: Lazy mode for translations', function() {
                 value: 'fr-FR'
             });
         });
+    });
+});
+
+describe("Factory@translator: Lazy mode with data provider", function() {
+    var translatorData, scope, $rootScope;
+
+    beforeEach(module('ui.router'));
+
+    beforeEach(module('ngBabelfish', function ($provide) {
+        $provide.decorator('babelfish', function ($delegate) {
+
+            $delegate.load = function(lang) {
+            };
+            return $delegate;
+        });
+    }));
+
+    beforeEach(inject(function (_$rootScope_, _translator_) {
+        $rootScope = _$rootScope_;
+        scope = _$rootScope_.$new();
+        translatorData = _translator_;
+        translatorData.init(configDataLazy);
+
+        document.documentElement.lang = '';
+    }));
+
+    beforeEach(function() {
+        translatorData.load();
+    });
+
+    it('should load the en-EN lang', function () {
+        expect(translatorData.available().indexOf('en-EN') > -1).toBeTruthy();
+    });
+
+    it('should only load  the en-EN lang', function () {
+        expect(Object.keys(translatorData.translations()).length).toEqual(1);
+    });
+
+    it('should load the home translations for en-EN', function () {
+        expect(translatorData.current()).toBe('en-EN');
+    });
+
+    it('should fill the scope with some translations', function() {
+        expect(scope.i18n).toBeDefined();
+        expect(scope.i18n.welcome_cart).toBeDefined();
+    });
+
+    it('should have home translations for en-EN', function () {
+        expect(translatorData.get().welcome_cart).toBeDefined('Welcome to ngBabelfish');
+    });
+
+    it('should have all translations', function () {
+        expect(Object.keys(translatorData.available()).length).toEqual(2);
+    });
+
+    describe('switch to another langage', function() {
+
+        beforeEach(function() {
+            inject(function ($injector) {
+                spyOn($rootScope,'$emit');
+            });
+            translatorData.updateLang('fr-FR');
+        });
+
+        it('should switch to french translations', function () {
+            expect(document.documentElement.lang).toBe('fr');
+            expect(translatorData.current()).toBe('fr-FR');
+        });
+
+        it('should update the scope', function() {
+            expect(scope.i18n.home).toBe('Maison');
+        });
+
+ /*     Return bad previous value, to investigate
+        it('should trigger the changed event', function () {
+            expect($rootScope.$emit).toHaveBeenCalledWith('ngBabelfish.translation:changed', {
+                previous: 'en-EN',
+                value: 'fr-FR'
+            });
+        });*/
     });
 });
