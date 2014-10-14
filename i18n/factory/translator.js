@@ -128,6 +128,21 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
             });
 
             i18n.stateLoaded = true;
+        } else if (config.lazy) {
+
+            angular.extend(common, i18n.data[lang]._common);
+            currentPageTranslation = angular.extend(common, i18n.data[page]);
+
+            if(config.namespace) {
+                $rootScope[config.namespace] = currentPageTranslation;
+            }else {
+                angular.extend($rootScope, currentPageTranslation);
+            }
+
+            $rootScope.$emit('ngBabelfish.translation:loaded', {
+                currentState: page,
+                lang: lang
+            });
         }
     }
 
@@ -181,7 +196,11 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
     var service = {
 
         setData: function setData(data) {
-            i18n.data = data;
+
+            i18n.stateLoaded = false;
+            buildI18n(data);
+            setTranslation();
+
         },
 
         /**
