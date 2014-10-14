@@ -253,3 +253,77 @@ describe("Factory@translator: Lazy mode with data provider", function() {
         });*/
     });
 });
+
+
+describe('Factory@translator: change current data in lazy mode', function(){
+
+    var scope, translator;
+
+    beforeEach(module('ui.router'));
+    beforeEach(module('ngBabelfish', function (babelfishProvider) {
+        babelfishProvider = function() {
+            this.init = function() {},
+            this.$get = function() {}
+        }
+    }));
+
+    beforeEach(inject(function (_$rootScope_, _translator_) {
+        translator = _translator_;
+        translator.init(angular.extend({}, configDataLazy));
+        translator.load();
+        scope = _$rootScope_;
+        document.documentElement.lang = '';
+    }));
+
+    //Reload data for current lang
+    beforeEach(function(){
+        translator.setData(enAnswer);
+    })
+
+    it('should contains translations inside i18n key', inject(function (translator) {
+        expect(scope.i18n).toBeDefined();
+    }));
+
+    it('should have teh content from each page', inject(function (translator) {
+        expect(scope.i18n.welcome_cart).toBe("Welcome to ngBabelfish");
+    }));
+
+    it('should be loaded', function () {
+        expect(translator.isLoaded()).toBe(true);
+    });
+
+    it('should have some translations available', function () {
+        expect(translator.all()).toBeDefined();
+    });
+
+    it('should have common translations', function () {
+        expect(translator.all()['_common']).toBeDefined();
+        expect(translator.all()['_common'].currency).toBe('$');
+    });
+
+    it('should have been Populate the scope', function() {
+        expect(scope.i18n.currency).toBeDefined();
+        expect(scope.i18n.currency).toBe('$');
+    });
+
+    it('should overide sharred keys with the current keys for a page', function () {
+        expect(translator.all()['_common'].welcome_cart).toBe('title');
+        expect(translator.get().welcome_cart).toBe('Welcome to ngBabelfish');
+        expect(scope.i18n.welcome_cart).toBeDefined('Welcome to ngBabelfish');
+    });
+
+    it('should switch to french translations', function () {
+        translator.updateLang('fr-FR');
+        expect(document.documentElement.lang).toBe('fr');
+        expect(translator.current()).toBe('fr-FR');
+    });
+
+    it('should have all translations', function () {
+        expect(Object.keys(translator.available()).length).toEqual(2);
+    });
+
+    it('should not have common key', function () {
+        expect(Object.keys(translator.available()).indexOf('_common')).toEqual(-1);
+    });
+});
+
