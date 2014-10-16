@@ -236,7 +236,8 @@ angular.module('myApp',['ui.router','ngBabelfish'])
                     lang: "en-EN",
                     url: "/i18n/en-EN.json"
                 }
-            ]
+            ],
+            debug: true // By default this value is false, put to true if you want information about debug
         });
 
     });
