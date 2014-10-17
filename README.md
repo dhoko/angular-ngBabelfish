@@ -483,3 +483,5 @@ $ npm test
 ```sh
 $ npm run build
 ```
+
+> You need to have [UglifyJS](https://github.com/mishoo/UglifyJS2) in global
