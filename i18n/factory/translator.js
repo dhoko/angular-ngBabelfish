@@ -203,6 +203,13 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
 
         },
 
+        setDataForLanguage: function setDataForLanguage(data, language) {
+
+            if(config.lazy) {
+                i18n.data[language] = data;
+            }
+        },
+
         /**
          * Configure this factory
          *
