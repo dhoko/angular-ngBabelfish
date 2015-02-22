@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 /**
  * i18nBind directive
  * Load a translation for a var
@@ -200,21 +200,27 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
             });
 
             i18n.stateLoaded = true;
-        } else if (config.lazy) {
+        }
 
-            angular.extend(common, i18n.data[lang]._common);
-            currentPageTranslation = angular.extend(common, i18n.data[page]);
+        if (config.lazy) {
 
-            if(config.namespace) {
-                $rootScope[config.namespace] = currentPageTranslation;
-            }else {
-                angular.extend($rootScope, currentPageTranslation);
-            }
+          if(!i18n.data[lang]) {
+            i18n.data[lang] = {};
+          }
 
-            $rootScope.$emit('ngBabelfish.translation:loaded', {
-                currentState: page,
-                lang: lang
-            });
+          angular.extend(common, i18n.data[lang]._common);
+          currentPageTranslation = angular.extend(common, i18n.data[lang][page] || {});
+
+          if(config.namespace) {
+              $rootScope[config.namespace] = currentPageTranslation;
+          }else {
+              angular.extend($rootScope, currentPageTranslation);
+          }
+
+          $rootScope.$emit('ngBabelfish.translation:loaded', {
+              currentState: page,
+              lang: lang
+          });
         }
     }
 
@@ -657,4 +663,4 @@ module.exports = function() {
         return Object.create(translator);
     }];
 };
-},{}]},{},[6])
+},{}]},{},[6]);

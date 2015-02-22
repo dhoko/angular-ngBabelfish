@@ -271,7 +271,7 @@ describe('Factory@translator: change current data in lazy mode', function(){
         translator = _translator_;
         translator.init(angular.extend({}, configDataLazy));
         translator.load();
-        scope = _$rootScope_;
+        scope = _$rootScope_.$new();
         document.documentElement.lang = '';
     }));
 
