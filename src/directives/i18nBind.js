@@ -16,6 +16,15 @@ angular.module('ngBabelfish')
 
         // Because it breaks if you update translationKey...
         if(attr.i18nBindLang) {
+
+          if(babelfish.isLangLoaded(attr.i18nBindLang)) {
+            var translation = babelfish.get(attr.i18nBindLang);
+            return el.text(translation[key]);
+          }
+
+          /**
+           * @todo Remove event listener, too many listeners !
+           */
           $rootScope.$on('ngBabelfish.lang:loaded', function (e, data) {
             if(babelfish.isLangLoaded(attr.i18nBindLang)) {
               var translation = babelfish.get(attr.i18nBindLang);

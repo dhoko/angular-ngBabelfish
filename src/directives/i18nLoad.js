@@ -1,13 +1,13 @@
 angular.module('ngBabelfish')
-  .directive('i18nLoad', function (babelfishLang, marvinTasks) {
+  .directive('i18nLoad', function (babelfish) {
 
     return {
       link: function(scope, el, attr) {
         el.on('click',function() {
           scope.$apply(function() {
-            babelfishLang.set(attr.i18nLoad);
-            marvinTasks.bindToScope();
+            babelfish.updateLang(attr.i18nLoad);
           });
+
         });
       }
     }

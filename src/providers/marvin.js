@@ -44,7 +44,7 @@ angular.module('ngBabelfish')
       }
 
       config.lazy = true;
-      config.urls.push(opt);
+      config.lazyConfig.push(opt);
       return this;
     };
 
@@ -109,13 +109,13 @@ angular.module('ngBabelfish')
         getLazyConfig: function getLazyConfig(langKey) {
 
           var langToFind = langKey || this.getDefaultLang();
-          return config.urls.filter(function (o) {
+          return config.lazyConfig.filter(function (o) {
             return o.lang === langToFind;
           })[0] || {};
         },
 
         getLazyConfigByUrl: function getLazyConfigByUrl(url) {
-          return config.urls.filter(function (o) {
+          return config.lazyConfig.filter(function (o) {
             return o === url;
           })[0];
         },

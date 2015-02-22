@@ -6,7 +6,7 @@ angular.module('ngBabelfish')
     var model = marvinMemory.get();
 
     $rootScope.$on('ngBabelfish.marvin:requestTranslation', function (e, data) {
-      init(data);
+      init(data.state, data.url);
     });
 
     function init(stateName, url) {
@@ -14,11 +14,12 @@ angular.module('ngBabelfish')
       load().then(marvinTasks.bindToScope);
     }
 
-    function setLanguage(lang) {
+    function setLanguage(lang, cb) {
+      cb = cb || angular.noop;
       model.lang.previous = angular.copy(model.lang.current);
       model.lang.current = lang;
-
       $rootScope.$emit('ngBabelfish.lang:setLanguage', model.current);
+      cb();
     }
 
     function load(url) {
@@ -27,7 +28,7 @@ angular.module('ngBabelfish')
       url = url || marvin.getConfig().url;
 
       if(marvin.isLazy()) {
-        url = marvin.getLazyConfig(model.current || marvin.getConfig().lang);
+        url = marvin.getLazyConfig(model.lang.current || marvin.getConfig().lang).url;
       }
 
       return $http
@@ -44,6 +45,7 @@ angular.module('ngBabelfish')
       var lang = model.lang.current;
 
       if(marvin.isLazy()) {
+        model.data = {};
         model.data[lang] = data;
 
         if(-1 === model.available.indexOf(lang)) {
