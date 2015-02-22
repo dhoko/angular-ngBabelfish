@@ -23,7 +23,13 @@ angular.module('ngBabelfishDemo', ['ui.router','ngBabelfish'])
 
       $urlRouterProvider.otherwise('/');
 
-      marvinProvider.init({
-        url: '../i18n/languages.json'
-      });
+      marvinProvider
+        .lang({
+          lang: 'en-EN',
+          url: '../i18n/en-EN.json'
+        })
+        .lang({
+          lang: 'fr-FR',
+          url: '../i18n/fr-FR.json'
+        });
   })

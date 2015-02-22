@@ -1,13 +1,9 @@
 angular.module('ngBabelfish')
-  .service('babelfish', function ($rootScope, marvin, marvinMemory) {
+  .service('babelfish', function ($rootScope, marvin, marvinMemory, babelfishLang, marvinTasks) {
 
     'use strict';
 
     var model = marvinMemory.get();
-
-    $rootScope.$on('ngBabelfish.lang:loaded', function() {
-      console.log('Lang is loaded')
-    });
 
     /**
      * Return the current state translation
@@ -66,7 +62,7 @@ angular.module('ngBabelfish')
      * @return {Boolean}
      */
     function isLangLoaded(lang) {
-        return !!model.data[lang];
+        return model.data && !!model.data[lang];
     }
 
     /**
@@ -97,6 +93,9 @@ angular.module('ngBabelfish')
       return model.available;
     }
 
+    function updateLang(lang) {
+      babelfishLang.set(lang, marvinTasks.bindToScope);
+    }
 
     return {
       get: get,
@@ -105,6 +104,7 @@ angular.module('ngBabelfish')
       translations: translations,
       languages: getLanguages,
       isLangLoaded: isLangLoaded,
-      isLoaded: isLoaded
+      isLoaded: isLoaded,
+      updateLang: updateLang
     };
   });

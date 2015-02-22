@@ -11,17 +11,17 @@ angular.module('ngBabelfish')
 
       // We do not want to have multiple reload if the lang is already present
       if(marvin.isLazy() && !model.data[lang]) {
-        return $rootScope.$emit('ngBabelfish.marvin:requestTranslation', {
+        $rootScope.$emit('ngBabelfish.marvin:requestTranslation', {
           state: model.state.current,
           url: marvin.getLazyConfig(lang).url
         });
+        return;
       }
 
       setTranslation();
     }
 
     function setTranslation() {
-
       var lang = model.lang.current;
       var state = model.state.current,
           stateI18n,
