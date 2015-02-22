@@ -315,7 +315,7 @@ describe('Factory@translator: Sir can you translate this application with data p
         translator = _translator_;
         translator.init(configData);
         translator.load();
-        
+
         scope = _$rootScope_;
 
         document.documentElement.lang = '';
@@ -453,7 +453,7 @@ describe('Factory@translator: Add a namespace with data provider', function(){
         translator = _translator_;
         translator.init(angular.extend({}, configData, {namespace: 'i18n'}));
         translator.load();
-        
+
         scope = _$rootScope_;
 
         document.documentElement.lang = '';
