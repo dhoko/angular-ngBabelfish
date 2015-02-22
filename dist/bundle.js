@@ -372,7 +372,9 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
 
                 return $http.get(url)
                     .error(function() {
-                        alert("Cannot load i18n translation file");
+                        if(config.debug) {
+                            alert("Cannot load i18n translation file");
+                        }
                     })
                     .success(function (data) {
 
@@ -418,7 +420,9 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
 
             return $http.get(url)
                 .error(function() {
-                    alert("Cannot load i18n translation file");
+                    if(config.debug) {
+                        alert("Cannot load i18n translation file");
+                    }
                 })
                 .success(function (data) {
 
@@ -610,6 +614,7 @@ module.exports = function() {
         url: '/i18n/languages.json',
         eventName: '$stateChangeSuccess',
         namespace: "",
+        debug: false,
         lazy: false,
         urls: [],
         current: "",
