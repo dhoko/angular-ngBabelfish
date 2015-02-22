@@ -1,9 +1,9 @@
 {
   "name": "ngBabelfish",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "homepage": "https://github.com/dhoko/ngBabelfish",
   "authors": [
-    "dhoko <aurelien@procheo.fr>"
+    "dhoko <dhoko@cyaneus.org>"
   ],
   "description": "Internationalization module for angular.js, it's magic !",
   "main": "dist/bundle.js",
