@@ -1,0 +1,25 @@
+{
+  "name": "ngBabelfish",
+  "version": "2.0.0",
+  "homepage": "https://github.com/dhoko/ngBabelfish",
+  "authors": [
+    "dhoko <contact@dhoko.me>"
+  ],
+  "description": "Internationalization module for angular.js, it's magic !",
+  "main": "dist/bundle.js",
+  "keywords": [
+    "angular",
+    "i18n"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "demo",
+    "karma.conf.js",
+    "version.js"
+  ]
+}
