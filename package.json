@@ -5,7 +5,6 @@
   "main": "dist/bundle.js",
   "scripts": {
     "test": "./node_modules/karma/bin/karma start karma.conf.js",
-    "postinstall": "gulp module",
     "build": "node ./node_modules/browserify/bin/cmd.js i18n/i18n.js > dist/bundle.js && node ./node_modules/browserify/bin/cmd.js i18n/i18n.js | uglifyjs > dist/bundle.min.js"
   },
   "repository": {
