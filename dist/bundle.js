@@ -209,7 +209,7 @@ module.exports = ['$rootScope', '$http', function ($rootScope, $http) {
           }
 
           angular.extend(common, i18n.data[lang]._common);
-          currentPageTranslation = angular.extend(common, i18n.data[page] || {});
+          currentPageTranslation = angular.extend(common, i18n.data[lang][page] || {});
 
           if(config.namespace) {
               $rootScope[config.namespace] = currentPageTranslation;
