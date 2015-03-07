@@ -7,6 +7,7 @@ var fs          = require('fs'),
     plumber     = require('gulp-plumber'),
     beautify    = require('gulp-beautify'),
     uglify      = require('gulp-uglify'),
+    util        = require('gulp-util'),
     jeditor     = require('gulp-json-editor'),
     streamqueue = require('streamqueue'),
     sourcemaps  = require('gulp-sourcemaps')
@@ -39,11 +40,10 @@ gulp.task('module', function() {
 
 gulp.task('package', function() {
 
-  var type = 'patch';
+  var type = 'patch', version;
 
   gulp.src(['package.json', 'bower.json'])
     .pipe(jeditor(function (json) {
-
       if(process.argv.indexOf('--major') > -1) {
         type = 'major';
       }
@@ -51,10 +51,14 @@ gulp.task('package', function() {
       if(process.argv.indexOf('--minor') > -1) {
         type = 'minor';
       }
-      json.version = semver.inc(json.version, type);
+      version = json.version = semver.inc(json.version, type);
       return json;
     }))
+    .pipe(tap(function (file) {
+      console.log('  ✔  Update %s.json to the version %s',path.basename(file.path, '.json'), version);
+    }))
     .pipe(gulp.dest('./'));
+
 });
 
 gulp.task('default', ['module'], function() {
