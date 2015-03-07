@@ -57,21 +57,25 @@ angular.module('ngBabelfish')
         stateI18n
       );
 
-      if(marvin.getNamespace()) {
-        $rootScope[marvin.getNamespace()] = translation;
-      }else {
-        angular.extend($rootScope, translation);
+      if(marvin.isBindToScope()) {
+        if(marvin.getNamespace()) {
+          $rootScope[marvin.getNamespace()] = translation;
+        }else {
+          angular.extend($rootScope, translation);
 
-        if(marvin.isVerbose()) {
-          console.warn('[marvinTasks@setTranslation] It is better to Load i18n inside a namespace.');
+          if(marvin.isVerbose()) {
+            console.warn('[marvinTasks@setTranslation] It is better to Load i18n inside a namespace.');
+          }
         }
       }
 
       $rootScope.$emit('ngBabelfish.translation:loaded', {
         currentState: state,
-        lang: lang
+        lang: lang,
+        previousLang: model.lang.previous
       });
 
     }
+
     this.bindToScope = bindToScope;
   });

@@ -1,5 +1,5 @@
 angular.module('ngBabelfish')
-  .service('babelfish', function ($rootScope, marvin, marvinMemory, babelfishLang, marvinTasks) {
+  .service('babelfish', function ($rootScope, marvin, marvinMemory, babelfishLang, marvinTasks, babelfishEvent) {
 
     'use strict';
 
@@ -15,15 +15,10 @@ angular.module('ngBabelfish')
       var currentLang = model.data[lang || model.lang.current] || {},
           common = {};
 
-      if(marvin.isSolo()) {
-        return angular.extend({}, model.data._common || {}, currentLang);
-      }
-
-
       if(!currentLang[model.state.current]) {
 
         if(marvin.isVerbose()) {
-          console.warn('[ngBabelfish-translator@get] No translation available for the page %s for the  lang %s',model.state.current, (lang || model.lang.current));
+          console.warn('[ngBabelfish-translator@get] No translation available for the page %s for the lang %s',model.state.current, (lang || model.lang.current));
         }
         currentLang[model.state.current] = {};
       }
@@ -38,14 +33,7 @@ angular.module('ngBabelfish')
      * @return {Object}
      */
     function all(lang) {
-
-      var langId = lang || model.lang.current;
-
-      if(marvin.isSolo()) {
-        return angular.extend({}, model.data._common || {}, model.data[langId] || {});
-      }
-
-      return model.data[langId];
+      return model.data[lang || model.lang.current];
     }
 
     /**
@@ -83,10 +71,10 @@ angular.module('ngBabelfish')
 
     /**
      * List each language available in babelfish
-     * With the solo mode you can use a key _comom to share between each lang a trad. So we cannot return it.
      * @return {Array}
      */
     function getLanguages() {
+
       if(model.available.indexOf('_comon') > -1) {
         model.available.splice(model.available.indexOf('_comon'),1);
       }
@@ -105,6 +93,7 @@ angular.module('ngBabelfish')
       languages: getLanguages,
       isLangLoaded: isLangLoaded,
       isLoaded: isLoaded,
-      updateLang: updateLang
+      updateLang: updateLang,
+      on: babelfishEvent.set
     };
   });
