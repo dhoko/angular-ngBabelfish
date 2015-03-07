@@ -1,11 +1,13 @@
 var fs          = require('fs'),
     path        = require('path'),
     gulp        = require('gulp'),
+    semver      = require('semver'),
     concat      = require('gulp-concat'),
     tap         = require('gulp-tap'),
     plumber     = require('gulp-plumber'),
     beautify    = require('gulp-beautify'),
     uglify      = require('gulp-uglify'),
+    jeditor     = require('gulp-json-editor'),
     streamqueue = require('streamqueue'),
     sourcemaps  = require('gulp-sourcemaps')
     ngAnnotate  = require('gulp-ng-annotate');
@@ -35,64 +37,24 @@ gulp.task('module', function() {
 
 });
 
-gulp.task('modules', function() {
+gulp.task('package', function() {
 
-  /**
-   * List each directory inside a directory
-   * From {@link https://github.com/gulpjs/gulp/blob/master/docs/recipes/running-task-steps-per-folder.md}
-   * @param  {String} dir Directory
-   * @return {Array}
-   */
-  function getFolders(dir) {
-    return fs.readdirSync(dir)
-      .filter(function(file) {
-        return fs.statSync(path.join(dir, file)).isDirectory();
-      });
-  }
+  var type = 'patch';
 
-  var folders = getFolders('./src'),
-      i = folders.length,
-      stream = streamqueue({objectMode: true});
+  gulp.src(['package.json', 'bower.json'])
+    .pipe(jeditor(function (json) {
 
-  stream.queue(gulp.src('./src/index.js'));
+      if(process.argv.indexOf('--major') > -1) {
+        type = 'major';
+      }
 
-  while(i-- > 0) {
-
-    stream
-      .queue(
-      gulp.src('./src/' + folders[i] + '/**/*.js')
-        .pipe(plumber())
-        .pipe(tap(function (file) {
-
-          if('index' !== path.basename(file.path,'.js')) {
-            var paths = file.path.split(path.sep);
-            file.contents = Buffer
-                    .concat([
-                    new Buffer('angular.module(\'' + paths[paths.length -3] + '\')' + "\n."),file.contents
-                    ]);
-          }
-        }))
-        .pipe(concat(folders[i] + '.js',{newLine: "\n"}))
-      );
-  }
-
-  return stream.done()
-      .pipe(plumber())
-      .pipe(ngAnnotate({
-        add: true,
-        remove: true,
-        single_quotes: true
-      }))
-      .pipe(beautify({
-        indentSize: 2,
-        keepArrayIndentation: true
-      }))
-      .pipe(sourcemaps.init())
-      .pipe(concat('bundle.js'))
-      .pipe(sourcemaps.write())
-      .pipe(uglify())
-      .pipe(concat('bundle.min.js'))
-      .pipe(gulp.dest('./dev'));
+      if(process.argv.indexOf('--minor') > -1) {
+        type = 'minor';
+      }
+      json.version = semver.inc(json.version, type);
+      return json;
+    }))
+    .pipe(gulp.dest('./'));
 });
 
 gulp.task('default', ['module'], function() {

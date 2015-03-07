@@ -81,6 +81,11 @@ angular.module('ngBabelfish')
       return model.available;
     }
 
+    /**
+     * Change the current language
+     * @param  {String} lang
+     * @return {void}
+     */
     function updateLang(lang) {
       babelfishLang.set(lang, marvinTasks.bindToScope);
     }

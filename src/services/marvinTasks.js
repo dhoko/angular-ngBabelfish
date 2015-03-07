@@ -5,6 +5,11 @@ angular.module('ngBabelfish')
 
     var model = marvinMemory.get();
 
+    /**
+     * Load a translation to the scope
+     * @event 'nbBalebelfish.marvin:requestTranslation' if we are in lazy mode
+     * @return {void}
+     */
     function bindToScope() {
 
       var lang = model.lang.current;
@@ -21,7 +26,12 @@ angular.module('ngBabelfish')
       setTranslation();
     }
 
+    /**
+     * Load translations to the scope or update the model if you set config.bindToScope to false.
+     * @event ngBabelfish.translation:loaded
+     */
     function setTranslation() {
+
       var lang = model.lang.current;
       var state = model.state.current,
           stateI18n,
@@ -58,6 +68,7 @@ angular.module('ngBabelfish')
       );
 
       if(marvin.isBindToScope()) {
+
         if(marvin.getNamespace()) {
           $rootScope[marvin.getNamespace()] = translation;
         }else {
