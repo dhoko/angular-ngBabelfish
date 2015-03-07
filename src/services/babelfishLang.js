@@ -11,6 +11,11 @@ angular.module('ngBabelfish')
 
     function init(stateName, url) {
       model.state.current = stateName;
+
+      if(!marvin.isBindToScope()) {
+        return;
+      }
+
       load().then(marvinTasks.bindToScope);
     }
 

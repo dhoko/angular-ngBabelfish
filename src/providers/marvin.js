@@ -16,7 +16,8 @@ angular.module('ngBabelfish')
         lazy: false,
         lazyConfig: [],
         current: '',
-        log: true
+        log: true,
+        bindToScope: true
     };
 
     /**
@@ -46,6 +47,16 @@ angular.module('ngBabelfish')
       config.lazy = true;
       config.lazyConfig.push(opt);
       return this;
+    };
+
+    /**
+     * Bind to the scope all translations
+     * @default true
+     * @param  {Boolean} isBind
+     * @return {void}
+     */
+    this.bindToScope = function bindToScope(isBind) {
+      config.bindToScope = isBind;
     };
 
     /**
@@ -130,6 +141,10 @@ angular.module('ngBabelfish')
          */
         isLazy: function isLazy() {
           return config.lazy;
+        },
+
+        isBindToScope: function isBindToScope() {
+          return config.bindToScope;
         },
 
         isSolo: function isSolo() {

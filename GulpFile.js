@@ -1,14 +1,14 @@
-var fs       = require('fs'),
-  path     = require('path'),
-  gulp     = require('gulp'),
-  concat   = require("gulp-concat"),
-  tap      = require("gulp-tap"),
-  plumber  = require('gulp-plumber'),
-  beautify = require('gulp-beautify'),
-  uglify = require('gulp-uglify'),
-  streamqueue = require('streamqueue'),
-  sourcemaps  = require('gulp-sourcemaps')
-  ngAnnotate  = require('gulp-ng-annotate');
+var fs          = require('fs'),
+    path        = require('path'),
+    gulp        = require('gulp'),
+    concat      = require('gulp-concat'),
+    tap         = require('gulp-tap'),
+    plumber     = require('gulp-plumber'),
+    beautify    = require('gulp-beautify'),
+    uglify      = require('gulp-uglify'),
+    streamqueue = require('streamqueue'),
+    sourcemaps  = require('gulp-sourcemaps')
+    ngAnnotate  = require('gulp-ng-annotate');
 
 
 gulp.task('module', function() {
@@ -21,10 +21,10 @@ gulp.task('module', function() {
       remove: true,
       single_quotes: true
     }))
-    // .pipe(beautify({
-    //   indentSize: 2,
-    //   keepArrayIndentation: true
-    // }))
+    .pipe(beautify({
+      indentSize: 2,
+      keepArrayIndentation: true
+    }))
     .pipe(sourcemaps.init())
     .pipe(concat('bundle.js'))
     .pipe(sourcemaps.write())
