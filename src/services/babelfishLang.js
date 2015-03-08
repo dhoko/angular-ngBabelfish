@@ -10,7 +10,8 @@ angular.module('ngBabelfish')
     });
 
     function init(stateName, url) {
-      model.state.current = stateName;
+
+      setState(stateName);
 
       if(!marvin.isBindToScope()) {
         return;
@@ -19,7 +20,22 @@ angular.module('ngBabelfish')
       load().then(marvinTasks.bindToScope);
     }
 
+    function bindForState(stateName) {
+      setState(stateName);
+
+      if(!marvin.isBindToScope()) {
+        return;
+      }
+
+      marvinTasks.bindToScope(stateName);
+    }
+
+    function setState(stateName) {
+      model.state.current = stateName;
+    }
+
     function setLanguage(lang, cb) {
+
       cb = cb || angular.noop;
       model.lang.previous = angular.copy(model.lang.current);
       model.lang.current = lang;
@@ -40,7 +56,7 @@ angular.module('ngBabelfish')
         .get(url)
         .error(function() {
           if(marvin.isVerbose()) {
-            throw new Error('[babelfishLangr@load] Cannot load the translation file');
+            throw new Error('[ngBabelfish.babelfishLang@load] Cannot load the translation file');
           }
         })
         .success(translate);
@@ -71,5 +87,7 @@ angular.module('ngBabelfish')
     this.load = load;
     this.translate = translate;
     this.set = setLanguage;
+    this.bindForState = bindForState;
+    this.setState = setState;
 
   });
