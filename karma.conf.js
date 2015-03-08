@@ -10,7 +10,7 @@ module.exports = function(config) {
       'node_modules/angular/angular.js',
       'node_modules/angular-mocks/angular-mocks.js',
       'node_modules/angular-ui-router/release/angular-ui-router.min.js',
-      // 'dist/bundle.js',
+      'test/mocks/**/*.mock.js',
       'src/index.js',
       'src/**/*.js',
       'test/specs/**/*.spec.js'

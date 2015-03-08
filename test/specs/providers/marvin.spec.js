@@ -171,6 +171,4 @@ describe('marvin provider', function() {
 
   });
 
-
-
 });
