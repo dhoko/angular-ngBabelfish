@@ -57,7 +57,7 @@ angular.module('ngBabelfish')
         model.data[lang][state] = {};
 
         if(marvin.isVerbose()) {
-          console.warn('[marvinTasks@setTranslation] No translation available for the page %s for the lang %s',state, lang);
+          console.warn('[ngBabelfish.marvinTasks@setTranslation] No translation available for the page %s for the lang %s', state, lang);
         }
       }
 
@@ -75,7 +75,7 @@ angular.module('ngBabelfish')
           angular.extend($rootScope, translation);
 
           if(marvin.isVerbose()) {
-            console.warn('[marvinTasks@setTranslation] It is better to Load i18n inside a namespace.');
+            console.warn('[ngBabelfish.marvinTasks@setTranslation] It is better to Load i18n inside a namespace.');
           }
         }
       }
@@ -89,4 +89,5 @@ angular.module('ngBabelfish')
     }
 
     this.bindToScope = bindToScope;
+    this.setTranslation = setTranslation;
   });
