@@ -6,6 +6,7 @@ angular.module('ngBabelfish')
     var memory = {
       state: {
         current: '',
+        previous: '',
         loaded: false
       },
       lang: {

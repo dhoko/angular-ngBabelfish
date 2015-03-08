@@ -30,7 +30,6 @@ module.exports = function(config) {
 
     // browsers: ['Chrome', 'PhantomJS'],
     browsers: ['PhantomJS'],
-    captureTimeout: 60000,
 
     singleRun: true,
 
