@@ -60,6 +60,16 @@ angular.module('ngBabelfish')
     };
 
     /**
+     * Set the route event Name to listen to
+     * @default $stateChangeSuccess
+     * @param  {String} eventName
+     * @return {void}
+     */
+    this.routingEvent = function routingEvent(eventName) {
+      config.routeEventName = eventName;
+    };
+
+    /**
      * Marvin service
      */
     this.$get = function($document) {

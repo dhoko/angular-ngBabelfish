@@ -1,5 +1,5 @@
 angular.module('ngBabelfish')
-  .service('babelfish', function ($rootScope, marvin, marvinMemory, babelfishLang, marvinTasks, babelfishEvent) {
+  .service('babelfish', function (marvin, marvinMemory, babelfishLang, marvinTasks, babelfishEvent) {
 
     'use strict';
 
@@ -18,7 +18,7 @@ angular.module('ngBabelfish')
       if(!currentLang[model.state.current]) {
 
         if(marvin.isVerbose()) {
-          console.warn('[ngBabelfish-translator@get] No translation available for the page %s for the lang %s',model.state.current, (lang || model.lang.current));
+          console.warn('[ngBabelfish.babelfish@get] No translation available for the page %s for the lang %s',model.state.current, (lang || model.lang.current));
         }
         currentLang[model.state.current] = {};
       }
