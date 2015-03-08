@@ -1,4 +1,4 @@
-angular.module('i18nMock')
+angular.module('i18nMock', [])
   .value('translations', {
     "en-EN": {
       "_common": {

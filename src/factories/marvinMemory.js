@@ -13,13 +13,15 @@ angular.module('ngBabelfish')
         current: 'en-EN'
       },
       data: null,
-      available: [],
-      active: false
+      available: []
     };
 
     return {
       get: function() {
         return memory;
+      },
+      set: function(config) {
+        angular.extend(memory, config);
       }
     };
   });
