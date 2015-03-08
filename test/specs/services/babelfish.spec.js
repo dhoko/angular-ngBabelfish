@@ -142,6 +142,12 @@ describe('babelfish service', function() {
       expect(console.warn).not.toHaveBeenCalled();
     });
 
+    it('should return empty Object if there are not lang', function() {
+      spyOn(marvin, 'isVerbose').and.returnValue(false);
+      var data = service.get('de-DE');
+      expect(Object.keys(data).length).toBe(0);
+    });
+
   });
 
 });

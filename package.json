@@ -10,6 +10,10 @@
     "build": "gulp package",
     "prebuild": "gulp module"
   },
+  "engines": {
+    "node": ">=0.10.0",
+    "npm": ">=2.1.0"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/dhoko/ngBabelfish.git"
