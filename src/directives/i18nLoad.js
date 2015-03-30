@@ -1,6 +1,8 @@
 angular.module('ngBabelfish')
   .directive('i18nLoad', function (babelfish) {
 
+    'use strict';
+
     return {
       link: function(scope, el, attr) {
         el.on('click',function() {
@@ -10,5 +12,5 @@ angular.module('ngBabelfish')
 
         });
       }
-    }
+    };
   });

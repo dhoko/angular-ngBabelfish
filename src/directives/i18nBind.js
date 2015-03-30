@@ -1,6 +1,8 @@
 angular.module('ngBabelfish')
   .directive('i18nBind', function ($rootScope, marvin, babelfish) {
 
+    'use strict';
+
     return {
       scope: {
         translationKey: '=i18nBind',
@@ -25,7 +27,7 @@ angular.module('ngBabelfish')
           /**
            * @todo Remove event listener, too many listeners !
            */
-          $rootScope.$on('ngBabelfish.lang:loaded', function (e, data) {
+          $rootScope.$on('ngBabelfish.lang:loaded', function() {
             if(babelfish.isLangLoaded(attr.i18nBindLang)) {
               var translation = babelfish.get(attr.i18nBindLang);
               el.text(translation[key]);
@@ -33,5 +35,5 @@ angular.module('ngBabelfish')
           });
         }
       }
-    }
+    };
   });

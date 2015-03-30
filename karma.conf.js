@@ -10,34 +10,31 @@ module.exports = function(config) {
       'node_modules/angular/angular.js',
       'node_modules/angular-mocks/angular-mocks.js',
       'node_modules/angular-ui-router/release/angular-ui-router.min.js',
-      'dist/bundle.js',
-      'test/specs/**/*'
+      'test/mocks/**/*.mock.js',
+      'src/index.js',
+      'src/**/*.js',
+      'test/specs/**/*.spec.js'
     ],
 
     exclude: [],
     // possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-    // reporters: ['tap'],
-    // reporters: ['progress'],
-    reporters: ['mocha'],
+    reporters: ['progress', 'coverage'],
 
     port: 9876,
-    runnerPort: 9100,
+
     colors: true,
-    logLevel: config.LOG_WARN,
-    autoWatch: true,
+
+    logLevel: config.LOG_INFO,
+
+    autoWatch: false,
 
     // browsers: ['Chrome', 'PhantomJS'],
     browsers: ['PhantomJS'],
-    captureTimeout: 60000,
 
     singleRun: true,
-    // browserify: {
-    //   watch: true,
-    // },
 
-    // Add browserify to preprocessors
     preprocessors: {
-        'src/**/*.js': ['coverage']
+      'src/**/*.js': ['coverage']
     },
     coverageReporter: {
       type : 'html',

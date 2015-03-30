@@ -1,22 +1,22 @@
 {
-    "en-EN": {
-        "_common": {
-            "version": "1.6.0",
-            "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Numquam doloremque, ipsa neque eaque saepe error amet pariatur aperiam vitae eius iure sapiente rem minima autem possimus facilis similique voluptatem laboriosam."
-        },
-        "home": {
-            "title": "ngBabelfish demonstration",
-            "about": "Internationalization module for angular.js, it's magic !"
-        }
+  "en-EN": {
+    "_common": {
+      "version": "1.6.0",
+      "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Numquam doloremque, ipsa neque eaque saepe error amet pariatur aperiam vitae eius iure sapiente rem minima autem possimus facilis similique voluptatem laboriosam."
     },
-    "fr-FR": {
-        "_common": {
-            "version": "1.6.0",
-            "text": "Masoirobal metatpulov euqilimis silicaf sumissop metua aminim mer etneipas erui suie eativ mairepa rutairap tema rorre epeas euqae euqen aspi ,euqmerolod mauqmuN .tile gnicisipida rutetcesnoc ,tema tis rolod muspi merol."
-        },
-        "home": {
-            "title": "La démonstration ngBabelfish",
-            "about": "Un module d'internationalisation pour Angular. C'est simple et magique !"
-        }
+    "home": {
+      "title": "ngBabelfish demonstration",
+      "about": "Internationalization module for angular.js, it's magic !"
     }
+  },
+  "fr-FR": {
+    "_common": {
+      "version": "1.6.0",
+      "text": "Masoirobal metatpulov euqilimis silicaf sumissop metua aminim mer etneipas erui suie eativ mairepa rutairap tema rorre epeas euqae euqen aspi ,euqmerolod mauqmuN .tile gnicisipida rutetcesnoc ,tema tis rolod muspi merol."
+    },
+    "home": {
+      "title": "La démonstration ngBabelfish",
+      "about": "Un module d'internationalisation pour Angular. C'est simple et magique !"
+    }
+  }
 }

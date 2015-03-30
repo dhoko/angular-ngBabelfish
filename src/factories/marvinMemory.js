@@ -6,6 +6,7 @@ angular.module('ngBabelfish')
     var memory = {
       state: {
         current: '',
+        previous: '',
         loaded: false
       },
       lang: {
@@ -13,13 +14,15 @@ angular.module('ngBabelfish')
         current: 'en-EN'
       },
       data: null,
-      available: [],
-      active: false
+      available: []
     };
 
     return {
       get: function() {
         return memory;
+      },
+      set: function(config) {
+        angular.extend(memory, config);
       }
     };
   });

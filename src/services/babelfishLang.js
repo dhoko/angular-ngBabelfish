@@ -9,43 +9,62 @@ angular.module('ngBabelfish')
       init(data.state, data.url);
     });
 
+    /**
+     * Load a translation and attach it to the scope if we can
+     * @param  {String} stateName current state
+     * @param  {String} url       Url to load
+     * @return {void}
+     */
     function init(stateName, url) {
-
       setState(stateName);
 
-      if(!marvin.isBindToScope()) {
-        return;
-      }
-
-      load().then(marvinTasks.bindToScope);
+      load(url)
+        .then(marvin.isBindToScope() ? marvinTasks.bindToScope : angular.noop);
     }
 
+    /**
+     * Attach a translation for a state to the scope if we can
+     * @param  {String} stateName Current state name
+     * @return {void}
+     */
     function bindForState(stateName) {
       setState(stateName);
 
-      if(!marvin.isBindToScope()) {
-        return;
+      if(marvin.isBindToScope()) {
+        marvinTasks.bindToScope(stateName);
       }
-
-      marvinTasks.bindToScope(stateName);
     }
 
+    /**
+     * Record the current state
+     * @param {String} stateName
+     */
     function setState(stateName) {
       model.state.current = stateName;
     }
 
+    /**
+     * Change the current language
+     * @param {String}   lang current lang
+     * @param {Function} cb
+     * @event ngBabelfish.lang:setLanguage
+     */
     function setLanguage(lang, cb) {
 
       cb = cb || angular.noop;
       model.lang.previous = angular.copy(model.lang.current);
       model.lang.current = lang;
-      $rootScope.$emit('ngBabelfish.lang:setLanguage', model.current);
+      $rootScope.$emit('ngBabelfish.lang:setLanguage', model.lang);
       cb();
     }
 
+    /**
+     * Load a translation
+     * @param  {String} url
+     * @return {q.Promise}
+     */
     function load(url) {
 
-      var lang = model.lang.current;
       url = url || marvin.getConfig().url;
 
       if(marvin.isLazy()) {
@@ -62,11 +81,18 @@ angular.module('ngBabelfish')
         .success(translate);
     }
 
+    /**
+     * Build translations or a language
+     * @param  {Object} data
+     * @event 'ngBabelfish.lang:loaded'
+     * @return {void}
+     */
     function translate(data) {
+
       var lang = model.lang.current;
 
       if(marvin.isLazy()) {
-        model.data = {};
+        model.data = model.data || {};
         model.data[lang] = data;
 
         if(-1 === model.available.indexOf(lang)) {

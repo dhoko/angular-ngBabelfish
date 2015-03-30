@@ -27,6 +27,7 @@ angular.module('ngBabelfish')
      */
     this.init = function initBabelfishConfig(params) {
       angular.extend(config, params);
+      return this;
     };
 
     /**
@@ -57,6 +58,18 @@ angular.module('ngBabelfish')
      */
     this.bindToScope = function bindToScope(isBind) {
       config.bindToScope = isBind;
+      return this;
+    };
+
+    /**
+     * Active verbose mode
+     * @default true
+     * @param  {Boolean} isVerbose
+     * @return {void}
+     */
+    this.verbose = function verbose(isVerbose) {
+      config.log = isVerbose;
+      return this;
     };
 
     /**
@@ -67,12 +80,13 @@ angular.module('ngBabelfish')
      */
     this.routingEvent = function routingEvent(eventName) {
       config.routeEventName = eventName;
+      return this;
     };
 
     /**
      * Marvin service
      */
-    this.$get = function($document) {
+    this.$get = function() {
       return {
 
         /**
@@ -108,13 +122,17 @@ angular.module('ngBabelfish')
         getDefaultLang: function getDefaultLang() {
 
           if(config.lang) {
-            $document.documentElement.lang = config.lang.split('-')[0];
+            document.documentElement.lang = config.lang.split('-')[0];
             return config.lang;
           }
 
-          return $document.documentElement.lang + '-' + $document.documentElement.lang.toUpperCase();
+          return document.documentElement.lang + '-' + document.documentElement.lang.toUpperCase();
         },
 
+        /**
+         * List each lang available for lazy mode
+         * @return {Array}
+         */
         getLazyLangAvailable: function getLazyLangAvailable() {
           return config.lazyConfig.map(function (item) {
             return item.lang;
@@ -135,9 +153,14 @@ angular.module('ngBabelfish')
           })[0] || {};
         },
 
+        /**
+         * Find a lazy config by its url
+         * @param  {String} url
+         * @return {Object}
+         */
         getLazyConfigByUrl: function getLazyConfigByUrl(url) {
           return config.lazyConfig.filter(function (o) {
-            return o === url;
+            return o.url === url;
           })[0];
         },
 
@@ -153,13 +176,13 @@ angular.module('ngBabelfish')
           return config.lazy;
         },
 
+        /**
+         * Check if we need to bind data to the scope
+         * @default true
+         * @return {Boolean}
+         */
         isBindToScope: function isBindToScope() {
           return config.bindToScope;
-        },
-
-        isSolo: function isSolo() {
-          console.log('[@todo] Need to implement solo mode');
-          return false;
         }
       };
     };

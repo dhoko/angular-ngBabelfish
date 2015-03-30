@@ -50,7 +50,7 @@ angular.module('ngBabelfish')
      * @return {Boolean}
      */
     function isLangLoaded(lang) {
-        return model.data && !!model.data[lang];
+      return !!model.data && !!model.data[lang];
     }
 
     /**
@@ -62,21 +62,13 @@ angular.module('ngBabelfish')
     }
 
     /**
-     * Check if we have loaded i18n
-     * @return {Boolean}
-     */
-    function isLoaded() {
-      return model.active;
-    }
-
-    /**
      * List each language available in babelfish
      * @return {Array}
      */
     function getLanguages() {
 
-      if(model.available.indexOf('_comon') > -1) {
-        model.available.splice(model.available.indexOf('_comon'),1);
+      if(model.available.indexOf('_common') > -1) {
+        model.available.splice(model.available.indexOf('_common'),1);
       }
       return model.available;
     }
@@ -97,7 +89,6 @@ angular.module('ngBabelfish')
       translations: translations,
       languages: getLanguages,
       isLangLoaded: isLangLoaded,
-      isLoaded: isLoaded,
       updateLang: updateLang,
       on: babelfishEvent.set
     };
