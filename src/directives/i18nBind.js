@@ -17,7 +17,7 @@ angular.module('ngBabelfish')
         }
 
         babelfish.on('change:language', function (data) {
-          if(babelfish.isLangLoaded(data.lang)) {
+          if(babelfish.isLangLoaded(data.lang) && !attr.i18nBindLang) {
             var translation = babelfish.get(data.lang);
             el.text(translation[key]);
           }

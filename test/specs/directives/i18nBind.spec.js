@@ -142,5 +142,23 @@ describe('babelfish service', function() {
 
   });
 
+  describe('Bind a custom lang', function() {
+
+    beforeEach(function() {
+      spyOn(babelfish, 'isLangLoaded').and.returnValue(true);
+      dom = compile('<div i18n-bind="text" i18n-bind-lang="fr-FR"></div>')(scope);
+      scope.$digest();
+    });
+
+    it('should load the i18n text', function() {
+      expect(dom.text()).toBe('french text');
+    });
+
+    it('should do nothing on change', function() {
+      babelfish.emit('change:language', {lang: 'en-EN'});
+      expect(dom.text()).toBe('french text');
+    });
+
+  });
 
 });
