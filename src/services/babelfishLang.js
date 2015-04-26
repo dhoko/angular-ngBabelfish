@@ -61,13 +61,14 @@ angular.module('ngBabelfish')
     /**
      * Load a translation
      * @param  {String} url
+     * @param {String} Lang load a custom lang (lazy mode only)
      * @return {q.Promise}
      */
-    function load(url) {
+    function load(url, lang) {
 
       url = url || marvin.getConfig().url;
 
-      if(marvin.isLazy()) {
+      if(marvin.isLazy() && !lang) {
         url = marvin.getLazyConfig(model.lang.current || marvin.getConfig().lang).url;
       }
 
@@ -78,7 +79,9 @@ angular.module('ngBabelfish')
             throw new Error('[ngBabelfish.babelfishLang@load] Cannot load the translation file');
           }
         })
-        .success(translate);
+        .success(function (data) {
+          translate(data, lang);
+        });
     }
 
     /**
@@ -87,9 +90,9 @@ angular.module('ngBabelfish')
      * @event 'ngBabelfish.lang:loaded'
      * @return {void}
      */
-    function translate(data) {
+    function translate(data, lang) {
 
-      var lang = model.lang.current;
+      lang = lang || model.lang.current;
 
       if(marvin.isLazy()) {
         model.data = model.data || {};
@@ -103,7 +106,6 @@ angular.module('ngBabelfish')
         model.data = data;
         model.available = Object.keys(data);
       }
-
       $rootScope.$emit('ngBabelfish.lang:loaded', {
         lang: lang
       });

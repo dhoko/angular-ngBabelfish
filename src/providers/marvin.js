@@ -38,11 +38,11 @@ angular.module('ngBabelfish')
     this.lang = function lang(opt) {
 
       if(!opt.lang) {
-        throw new Error('[babelfishProvider@lang] You must set the key lang');
+        throw new Error('[marvinProvider@lang] You must set the key lang');
       }
 
       if(!opt.url) {
-        throw new Error('[babelfishProvider@lang] You must set the key url');
+        throw new Error('[marvinProvider@lang] You must set the key url');
       }
 
       config.lazy = true;

@@ -82,6 +82,16 @@ angular.module('ngBabelfish')
       babelfishLang.set(lang, marvinTasks.bindToScope);
     }
 
+    /**
+     * Load a custom lang
+     * @param  {String} lang
+     * @return {void}
+     */
+    function loadLanguage(lang) {
+      var config = marvin.getLazyConfig(lang);
+      babelfishLang.load(config.url, lang);
+    }
+
     return {
       get: get,
       all: all,
@@ -90,6 +100,7 @@ angular.module('ngBabelfish')
       languages: getLanguages,
       isLangLoaded: isLangLoaded,
       updateLang: updateLang,
+      load: loadLanguage,
       on: babelfishEvent.set
     };
   });

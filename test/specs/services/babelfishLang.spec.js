@@ -174,6 +174,17 @@ describe('babelfishLang service', function() {
       expect(marvin.isVerbose).toHaveBeenCalled();
     });
 
+
+    xit('should throw a message onError if isVerbose', function() {
+      spyOn(marvin, 'isVerbose').and.returnValue(true);
+      loadRequest.reject();
+      rootScope.$digest();
+      expect(function() {
+        service.load();
+      }).toThrowError('[ngBabelfish.babelfishLang@load] Cannot load the translation file');
+
+    });
+
     it('should emit an event onSuccess', function() {
 
       spyOn(rootScope, '$emit');

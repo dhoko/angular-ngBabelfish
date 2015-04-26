@@ -1,39 +1,33 @@
 angular.module('ngBabelfish')
-  .directive('i18nBind', function ($rootScope, marvin, babelfish) {
+  .directive('i18nBind', function (marvin, babelfish) {
 
     'use strict';
 
     return {
-      scope: {
-        translationKey: '=i18nBind',
-        translationLang: '@i18nBindLang'
-      },
-      template: '{{translationKey}}',
       link: function(scope, el, attr) {
 
-        var key = '',
-            namespace = marvin.getNamespace();
+        var key = attr.i18nBind,
+            lang = attr.i18nBindLang || marvin.getDefaultLang();
 
-        key = (namespace) ? attr.i18nBind.replace(namespace + '.', '') : attr.i18nBind;
-
-        // Because it breaks if you update translationKey...
-        if(attr.i18nBindLang) {
-
-          if(babelfish.isLangLoaded(attr.i18nBindLang)) {
-            var translation = babelfish.get(attr.i18nBindLang);
-            return el.text(translation[key]);
-          }
-
-          /**
-           * @todo Remove event listener, too many listeners !
-           */
-          $rootScope.$on('ngBabelfish.lang:loaded', function() {
-            if(babelfish.isLangLoaded(attr.i18nBindLang)) {
-              var translation = babelfish.get(attr.i18nBindLang);
-              el.text(translation[key]);
-            }
-          });
+        if(babelfish.isLangLoaded(lang)) {
+          var translation = babelfish.get(lang);
+          return el.text(translation[key]);
+        }else {
+          (babelfish.current() !== lang) && babelfish.load(lang);
         }
+
+        babelfish.on('change:language', function (data) {
+          if(babelfish.isLangLoaded(data.lang) && !attr.i18nBindLang) {
+            var translation = babelfish.get(data.lang);
+            el.text(translation[key]);
+          }
+        });
+
+        babelfish.on('load:language', function (data) {
+          var translation = babelfish.get(data.lang);
+          el.text(translation[key]);
+        });
+
       }
     };
   });

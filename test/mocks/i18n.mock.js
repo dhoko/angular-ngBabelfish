@@ -1,5 +1,8 @@
 angular.module('i18nMock', [])
-  .value('translations', {
+  .value('translations', getTranslations());
+
+function getTranslations() {
+  return {
     "en-EN": {
       "_common": {
         "version": "1.6.0",
@@ -20,4 +23,5 @@ angular.module('i18nMock', [])
         "about": "bonjour maurice"
       }
     }
-  });
+  };
+}
