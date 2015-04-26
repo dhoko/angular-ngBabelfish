@@ -10,14 +10,20 @@ angular.module('ngBabelfish')
      * @param  {String} eventName
      * @return {void}
      */
-    function trigger(eventName) {
-      (events[eventName] || angular.noop)();
+    function trigger(eventName, data) {
+      (events[eventName] || []).forEach(function (eventRecord) {
+        eventRecord(data);
+      });
     }
 
     $rootScope.$on('ngBabelfish.translation:loaded', function (e, data) {
       if(data.previousLang !== data.lang) {
-        trigger('change:language');
+        trigger('change:language', data);
       }
+    });
+
+    $rootScope.$on('ngBabelfish.lang:loaded', function (e, data) {
+      trigger('load:language', data);
     });
 
     return {
@@ -29,7 +35,8 @@ angular.module('ngBabelfish')
        * @param {Function} cb        callback to record
        */
       set: function(eventName, cb) {
-        events[eventName] = cb;
+        events[eventName] = events[eventName] || [];
+        events[eventName].push(cb || angular.noop);
       }
     };
   });
