@@ -150,4 +150,12 @@ describe('babelfish service', function() {
 
   });
 
+  it('should load a language', function() {
+    spyOn(marvin, 'getLazyConfig').and.returnValue({url: 'fr-FR.json'});
+    spyOn(babelfishLang, 'load');
+    service.load('fr-FR');
+    expect(marvin.getLazyConfig).toHaveBeenCalledWith('fr-FR');
+    expect(babelfishLang.load).toHaveBeenCalledWith('fr-FR.json', 'fr-FR');
+  });
+
 });

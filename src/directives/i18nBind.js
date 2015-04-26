@@ -1,5 +1,5 @@
 angular.module('ngBabelfish')
-  .directive('i18nBind', function ($rootScope, marvin, babelfish) {
+  .directive('i18nBind', function (marvin, babelfish) {
 
     'use strict';
 
@@ -16,7 +16,6 @@ angular.module('ngBabelfish')
           (babelfish.current() !== lang) && babelfish.load(lang);
         }
 
-
         babelfish.on('change:language', function (data) {
           if(babelfish.isLangLoaded(data.lang)) {
             var translation = babelfish.get(data.lang);
@@ -25,7 +24,7 @@ angular.module('ngBabelfish')
         });
 
         babelfish.on('load:language', function (data) {
-          var translation = babelfish.get(lang);
+          var translation = babelfish.get(data.lang);
           el.text(translation[key]);
         });
 

@@ -20,7 +20,6 @@ angular.module('ngBabelfishDemo', ['ui.router','ngBabelfish'])
 
         babelfish.on('change:language', function() {
           $scope.i18n = babelfish.get();
-          console.log('Yolo')
         })
       }
     })
